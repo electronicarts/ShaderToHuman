@@ -71,7 +71,9 @@
             // for now we only support this but we might add more later e.g. "CUDA"
             option("Code", null, "HLSL|GLSL");
 
-            tab("Tabs", null, "What is S2H|Get Started|Gather|Scatter|2D|3D|UI|UnitTest|Sandbox|Integration|License");
+            // "Sandbox " disabled until we fix the remaining issues
+//            tab("Tabs", null, "What is S2H|Get Started|Gather|Scatter|2D|3D|UI|UnitTest|Sandbox|Integration|License");
+            tab("Tabs", null, "What is S2H|Get Started|Gather|Scatter|2D|3D|UI|UnitTest|Integration|License");
             
             var generateCode = true;                     logText("");
 
