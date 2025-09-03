@@ -281,22 +281,23 @@ void s2h_drawSkybox(inout Context3D context)
 		float pi = 3.14159265f;
 
 		// assuming normalized rd
-		float2 uv = float2(-atan2(d.z, d.x) / pi + 1, acos(d.y) / PI);
+		float2 uv = float2(-atan2(d.z, d.x) / pi + 1.0, acos(d.y) / pi);
 
-		float2 px = uv * float2(s2h_fontSize()*8, s2h_fontSize()*4);
+		float2 px = uv * float2(s2h_fontSize() * 8.0, s2h_fontSize() * 4.0);
 
-		float tileX = s2h_fontSize()*4;
+		float tileX = s2h_fontSize() * 4.0;
 
 		// 4*4 characters around the x axis
 		ContextGather ui;
 		s2h_init(ui, float2(frac(px.x / tileX + 0.5f) * tileX, px.y));
 
 		// horizon
-		ui.dstColor = saturate(1 - pow(abs(d.y), 0.2f));
+		ui.dstColor.rgb = float3(saturate(1.0f - pow(abs(d.y), 0.2f)));
+        ui.dstColor.a = 1.0f;
 
 		bool xzAxis = abs(d.x) > abs(d.z);
 
-		float posAxis = xzAxis ? (d.x > 0) : (d.z > 0);
+		bool posAxis = xzAxis ? (d.x > 0.0f) : (d.z > 0.0f);
 
 		s2h_setCursor(ui, float2(0, 12));
 		ui.textColor.rgb = xzAxis ? float3(1, 0, 0) : float3(0, 0, 1);
@@ -308,8 +309,6 @@ void s2h_drawSkybox(inout Context3D context)
 		context.dstColor = ui.dstColor;
 	}
 }
-
-//float3 homAway(float4 p) { return p.xyz / p.w; }
 
 void scene(inout Context3D context);
 
