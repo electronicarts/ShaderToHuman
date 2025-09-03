@@ -29,9 +29,6 @@ function setup2DCanvas(type, name) {
     }
     // reset canvas (clear the canvas for redrawing)
     g_CanvasContext.canvas.width = g_CanvasContext.canvas.width;
-
-    // draw 10x10 line grid
-    drawGrid(10);
 }
 
 var g_CanvasGLContext;
@@ -446,107 +443,8 @@ function mouseInput(event) {
     eval(g_imJSCode);
 }
 
-// @param color glm.vec3 RGB
-// @return color as string
-function vec3ToRGBString(color) {
-    const byteRGB = color['*'](255.999);
-    const clamped = glm.clamp(byteRGB, 0, 255);
-    return 'rgb(' + clamped.x + ',' + clamped.y + ',' + clamped.z + ')';
-}
-
-// SS: Screen Space, in pixels,  0,0 is left top
-// @param leftTop glm.vec2
-// @param rightBottom glm.vec2
-// @param color glm.vec3
-function drawBoxSS(leftTop, rightBottom, color) {
-    const ctx = g_CanvasContext.ctx;
-
-    const mx = g_CanvasContext.viewPan.x;
-    const my = g_CanvasContext.viewPan.y;
-
-    ctx.fillStyle = vec3ToRGBString(color);
-    ctx.fillRect(leftTop.x + mx, leftTop.y + my, rightBottom.x - leftTop.x, rightBottom.y - leftTop.y);
-    ctx.stroke();
-}
-
-// SS: Screen Space, in pixels,  0,0 is left top
-// @param ssPos glm.vec2
-// @param color glm.vec3
-function drawPointSS(ssPos, color) {
-    drawBoxSS(ssPos, ssPos['+'](glm.vec2(1, 1)), color);
-}
-
-// @param inValue glm.vec4 or glm.vec3
-// @return glm.vec3
-function homAway(inValue) {
-    const r = 1.0 / inValue.w;
-
-    return inValue.xyz['*'](r);
-}
-
-// CS: Clip Space, homogenious coordinate, -1:left..1:right, 1:top, -1:bottom
-// @param csPos glm.vec4
-// @param color glm.vec3
-// @param radiusInY e.g. 0.01
-function drawPointCS(csPos, color, csRadiusInY) {
-    console.assert(csRadiusInY != null, "input");
-
-    const cs = homAway(csPos);
-    const uv = glm.vec2(cs.x * 0.5 + 0.5, 0.5 - cs.y * 0.5);
-    const ssPos = glm.vec2(uv.x * g_CanvasContext.canvas.width, uv.y * g_CanvasContext.canvas.height);
-
-    // to make it square no matter the aspect ratio 
-    const ssRadius = glm.vec2(g_CanvasContext.canvas.height * csRadiusInY, g_CanvasContext.canvas.height * csRadiusInY);
-
-    drawBoxSS(ssPos['-'](ssRadius), ssPos['+'](ssRadius), color);
-}
-
 
 // Canvas helper functions
-
-// @param gridSize in pixels
-function drawGrid(gridSize) {
-    const canvas = g_CanvasContext.canvas;
-    const ctx = g_CanvasContext.ctx;
-
-    // tweaked to look good for dark and bright canvas
-    ctx.strokeStyle = `rgba(130, 130, 130, 0.15)`;
-    ctx.lineWidth = 1;
-
-    for (let x = 0; x <= canvas.width; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x + 0.5, 0);
-        ctx.lineTo(x + 0.5, canvas.height);
-        ctx.stroke();
-    }
-
-    // Draw horizontal grid lines
-    for (let y = 0; y <= canvas.height; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y + 0.5);
-        ctx.lineTo(canvas.width, y + 0.5);
-        ctx.stroke();
-    }
-}
-
-function drawPointWS(wsPos, color) {
-    // todo: compute only once
-    var viewFromWorld = computeCameraMatrix();
-
-    // todo
-    const aspectRatio = 1.0;
-    var clipFromView = perspectiveFovInfInvZRh(0.4 * 3.14, aspectRatio, 0.01); //glm.perspective(glm.radians(45.0), 4.0 / 3.0, 0.1, 100.0);
-
-    // glm.vec4 posCS = viewFromWorld * wsPos;  
-    var vsPos = viewFromWorld['*'](glm.vec4(wsPos, 1));
-
-    // cull behind camera
-    if (vsPos.z < 0.0) {
-        var csPos = clipFromView['*'](vsPos);
-
-        drawPointCS(csPos, color, 0.01);
-    }
-}
 
 // used by loadMultipleHLSLFiles
 // @param fileName e.g. "test.hlsl"

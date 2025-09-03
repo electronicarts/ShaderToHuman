@@ -20,7 +20,8 @@ This is only needed for development on the library. Windows only.
 - Connect a web browser to the shown web address.
 
 ## Roadmap / Plans
-
+* We might fix and expose the 'Sandbox' tab for in browser shader experiments.
+* We might add CUDA support
 
 ## Support / Authors
 * Martin Mittring MMittring@ea.com Kosmokleaner@Kosmokleaner.de (main author)
