@@ -462,6 +462,16 @@ function loadHLSLFile(fileName) {
 }
 
 function loadAllFiles() {
+
+    let files = [
+        "docs\\intro_0.hlsl", 
+        "docs\\intro_0.glsl"
+    ];
+
+    for (let el of files)
+        g_HLSLInputCode.set(el, loadHLSLFile(el.replace("\\", "/")));
+
+    /*
     const url = '/listfiles';
     paths = []
     return fetch(url)
@@ -486,6 +496,7 @@ function loadAllFiles() {
         .catch(error => {
             console.error(error);
         });
+        */
 }
 
 // call once in beginning to load multiple hlsl files so they can be accessed with code like this:

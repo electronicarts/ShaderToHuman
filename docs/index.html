@@ -15,6 +15,8 @@
     <title>Shader To Human (S2H)</title>
 
     <script>
+        let DOCS_PATH = "docs/"; // path to the docs folder    
+
         let initialStartup = true;
         function knowledge_Main() {
             validConfig.add("Tabs"); // to prevent assert, hacky?
@@ -133,13 +135,13 @@
                 logH2("Installation for glsl (OpenGL / Vulkan shader language)");
                 logText("Depending on your environmet you can choose from these 3 options:");
                 logText("a) Include 's2h_glsl.hlsl' first, then include the '.hlsl' as before.");
-                logText("b) Include the .glsl files in the 'public/include' files.");
-                logText("c) Copy the the content of the preconverted .glsl files (public/include folder) to a common place or in front of your own shader code.");
+                logText("b) Include the .glsl files in the '" + DOCS_PATH + "include' files.");
+                logText("c) Copy the the content of the preconverted .glsl files (" + DOCS_PATH + "include folder) to a common place or in front of your own shader code.");
                 logH2("A simple example");
                 logText("");
                 logText("Look at the top of the include files to copy a few lines to setup the library. Here is a simplex example:");
 
-                getPrettyCodeFile("public/docs/intro_0.hlsl");
+                getPrettyCodeFile("docs/intro_0.hlsl");
                 genCanvas("3D", 0, 480, 100);
             }
             
@@ -151,13 +153,13 @@
 
                 logH2("Shadertoy");
                 logText(
-                    "Copy the the content of the preconverted .glsl files (public/include folder) to the \"Common\" tab. " +
+                    "Copy the the content of the preconverted .glsl files (" + DOCS_PATH + "include folder) to the \"Common\" tab. " +
                     "You need \"s2h.glsl\" and if you want 3D then also \"s2h_3d.glsl\".");
                 logLink("Shadertoy", "https://www.shadertoy.com");
 
                 logH2("Gigi");
                 logText(
-                    "Copy the the content of the preconverted .glsl files (public/include folder) into your technique folder. " +
+                    "Copy the the content of the preconverted .glsl files (" + DOCS_PATH + "include folder) into your technique folder. " +
                     "It's best to use a subfolder \"s2h/include\". This way you can have the full s2s folder structure there as documentation and you can look at the examples.");
                 logLink("Gigi", "https://github.com/electronicarts/gigi");
 
@@ -200,7 +202,7 @@
                         logText("todo CS(uint2 DTid : SV_DispatchThreadID), PS(SV_Position), FS(OpenGL)");
                     }
 
-                    let fileName = "public/docs/gather_docs_" + subIndex + ".hlsl";
+                    let fileName = "docs/gather_docs_" + subIndex + ".hlsl";
                     // setup so the next call to getBackendCode("GLSL") by genCanvas() creates the right code
                     getPrettyCodeFile(fileName);
                     genCanvas("3D", 0, 480, 100);
@@ -231,7 +233,7 @@
                 let subIndex = computeIndexInString(get("Scatter"), subElements);
                 if(subIndex >= 0)
                 {
-                    let fileName = "public/docs/Scatter_docs_" + subIndex + ".hlsl";
+                    let fileName = "docs/Scatter_docs_" + subIndex + ".hlsl";
                     // setup so the next call to getBackendCode("GLSL") by genCanvas() creates the right code
                     getPrettyCodeFile(fileName);
                 }
@@ -251,7 +253,7 @@
                 let subIndex = computeIndexInString(get("2D"), subElements);
                 if(subIndex >= 0)
                 {
-                    let fileName = "public/docs/2D_docs_" + subIndex + ".hlsl";
+                    let fileName = "docs/2D_docs_" + subIndex + ".hlsl";
                     // setup so the next call to getBackendCode("GLSL") by genCanvas() creates the right code
                     getPrettyCodeFile(fileName);
                     genCanvas("3D", 0, 480, 100);
@@ -283,7 +285,7 @@
 
                 if(subIndex >= 0)
                 {
-                    let fileName = "public/docs/3D_docs_" + subIndex + ".hlsl";
+                    let fileName = "docs/3D_docs_" + subIndex + ".hlsl";
                     // setup so the next call to getBackendCode("GLSL") by genCanvas() creates the right code
                     getPrettyCodeFile(fileName);
                     genCanvas("3D", 0);
@@ -298,7 +300,7 @@
                 let subIndex = computeIndexInString(get("UI"), subElements);
                 if(subIndex >= 0)
                 {
-                    let fileName = "public/docs/UI_docs_" + subIndex + ".hlsl";
+                    let fileName = "docs/UI_docs_" + subIndex + ".hlsl";
                     // setup so the next call to getBackendCode("GLSL") by genCanvas() creates the right code
                     getPrettyCodeFile(fileName);
                     genCanvas("2D", 0, 480, 100);
