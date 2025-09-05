@@ -70,7 +70,7 @@ const state = new Map();
 const g_HLSLInputCode = new Map();
 
 // Note: This function is different when run from NodeJS.
-// @param filename e.g. "public/docs/intro_0.glsl" or "public/docs/intro_0.hlsl"
+// @param filename e.g. "docs/docs/intro_0.glsl" or "docs/docs/intro_0.hlsl"
 // @return source code as string
 function readCodeFile(filename){
     var code = null;

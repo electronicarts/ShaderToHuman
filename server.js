@@ -9,11 +9,11 @@ const index = "index.html"
 
 // Serve static files from the 'root' directory
 app.use(express.static(__dirname));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "docs")));
 
 // Return home page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, "public", index));
+  res.sendFile(path.join(__dirname, "docs", index));
 });
 
 app.get('/listfiles', (req, res) => {

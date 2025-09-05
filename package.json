@@ -1,6 +1,6 @@
 {
 	"name": "ShaderToHuman",
-	"version": "0.31.0",
+	"version": "0.10.0",
 	"description": "HLSL/GLSL library for debugging shaders",
 	"main": "server.js",
 	"scripts": {

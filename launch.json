@@ -1,5 +1,5 @@
 {
-    "version": "0.2.0",
+    "version": "0.10.0",
     "type": "chrome",
     "request": "launch",
     "name": "Launch ShaderToHuman in browser",

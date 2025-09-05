@@ -136,7 +136,7 @@ function genBackends(hlslCode, webGLCode, fileName) {
     genWebGlCode(webGLCode, fileName);
 }
 
-// @param filename e.g. "public/docs/intro_0.hlsl"
+// @param filename e.g. "docs/docs/intro_0.hlsl"
 function getPrettyCodeFile(hlslFileName) {
 
     console.assert(hlslFileName.endsWith(".hlsl"), "fileName needs to have .hlsl extension");

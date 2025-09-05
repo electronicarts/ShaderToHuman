@@ -1,5 +1,7 @@
 @echo off
-rem this generates public/docs and public/include from docs_src
+@set "OUT_DIR=docs"
+
+rem this generates %OUT_DIR%/docs and %OUT_DIR%/include from docs_src
 
 rem skip downto MAIN to have functions on top 
 GOTO:MAIN
@@ -12,12 +14,12 @@ GOTO:MAIN
         echo #define COPYRIGHT 0 >> input
         echo #include "docs_src/common.hlsl" >> input
         type docs_src\%FILE_NAME%.hlsl >> input
-        %CLPATH%\cl.exe /EP /C input > public\docs\%FILE_NAME%_%SUB_CATEGORY%.hlsl
+        %CLPATH%\cl.exe /EP /C input > %OUT_DIR%\docs\%FILE_NAME%_%SUB_CATEGORY%.hlsl
         echo #define SUB_CATEGORY %SUB_CATEGORY% > input
         echo #include "include/s2h_glsl.hlsl" >> input
         echo #include "docs_src/common.hlsl" >> input
         type docs_src\%FILE_NAME%.hlsl >> input
-        %CLPATH%\cl.exe /EP /C input > public\docs\%FILE_NAME%_%SUB_CATEGORY%.glsl
+        %CLPATH%\cl.exe /EP /C input > %OUT_DIR%\docs\%FILE_NAME%_%SUB_CATEGORY%.glsl
     ENDLOCAL
 EXIT /B 0
 
@@ -28,7 +30,7 @@ GATHER
 
 @set "CURRENT=%cd%"
 
-@rem xcopy include\s2h.hlsl public\include\ /y
+@rem xcopy include\s2h.hlsl docs\include\ /y
 
 @rem todo: improve
 @set CLPATH="C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64"
@@ -43,21 +45,21 @@ GATHER
 @rem echo f | xcopy /y src dest 
 @rem >2 NUL to supress error messages e.g. folder already exists
 
-@mkdir public 2> NUL
-@mkdir public\include 2> NUL
-@mkdir public\docs 2> NUL
+@mkdir %OUT_DIR% 2> NUL
+@mkdir docs\include 2> NUL
+@mkdir docs\docs 2> NUL
 
 @type include\s2h_glsl.hlsl > input
 @type include\s2h.hlsl >> input
-@%CLPATH%\cl.exe /EP /C input > public\include\s2h.glsl
+@%CLPATH%\cl.exe /EP /C input > %OUT_DIR%\include\s2h.glsl
 
 @type include\s2h_glsl.hlsl > input
 @type include\s2h_scatter.hlsl >> input
-@%CLPATH%\cl.exe /EP /C input > public\include\s2h_scatter.glsl
+@%CLPATH%\cl.exe /EP /C input > %OUT_DIR%\include\s2h_scatter.glsl
 
 @type include\s2h_glsl.hlsl > input
 @type include\s2h_3d.hlsl >> input
-@%CLPATH%\cl.exe /EP /C input > public\include\s2h_3d.glsl
+@%CLPATH%\cl.exe /EP /C input > %OUT_DIR%\include\s2h_3d.glsl
 
 rem 0..7 = let subGather = "printTxt|printDatatype|shapes|radio|button|checkbox|slider|sliderRGB";
 call:transpile gather_docs 0
