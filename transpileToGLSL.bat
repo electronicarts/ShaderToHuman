@@ -49,17 +49,21 @@ GATHER
 @mkdir docs\include 2> NUL
 @mkdir docs\docs 2> NUL
 
+@rem todo: refactor to have less repetition
 @type include\s2h_glsl.hlsl > input
 @type include\s2h.hlsl >> input
 @%CLPATH%\cl.exe /EP /C input > %OUT_DIR%\include\s2h.glsl
+@%CLPATH%\cl.exe /EP /C include\s2h.hlsl > %OUT_DIR%\include\s2h.hlsl
 
 @type include\s2h_glsl.hlsl > input
 @type include\s2h_scatter.hlsl >> input
 @%CLPATH%\cl.exe /EP /C input > %OUT_DIR%\include\s2h_scatter.glsl
+@%CLPATH%\cl.exe /EP /C include\s2h_scatter.hlsl > %OUT_DIR%\include\s2h_scatter.hlsl
 
 @type include\s2h_glsl.hlsl > input
 @type include\s2h_3d.hlsl >> input
 @%CLPATH%\cl.exe /EP /C input > %OUT_DIR%\include\s2h_3d.glsl
+@%CLPATH%\cl.exe /EP /C include\s2h_3d.hlsl > %OUT_DIR%\include\s2h_3d.hlsl
 
 rem 0..7 = let subGather = "printTxt|printDatatype|shapes|radio|button|checkbox|slider|sliderRGB";
 call:transpile gather_docs 0

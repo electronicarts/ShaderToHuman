@@ -1,7 +1,13 @@
+html {
+    overflow-y: scroll; /* always reserve scrollbar space */
+}
+
 body {
     background-color: #dddddd;
     font-family: Tahoma, sans-serif;
     font-size: 15px;
+    display: grid;
+    place-items: center; /* centers both horizontally & vertically */
 }
 
 h1 {
@@ -201,7 +207,8 @@ input[type="radio"] ~ .tab {
     border: 2px solid #999;
     padding: 12px;
     background-color: #eeeeee;
-    max-width: 1100px;
+    width: 800px;
+    max-width: 100%;
 }
 
 /* code */
@@ -212,7 +219,7 @@ pre {
     background: #1c1d21;
     font-family: monospace;
     line-height: normal;
-    max-width: 800px;
+    max-width: 750px;
 }
 
 /* hide all code class="ConfiguratorState" sections */

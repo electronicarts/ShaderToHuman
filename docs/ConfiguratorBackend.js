@@ -446,30 +446,59 @@ function mouseInput(event) {
 
 // Canvas helper functions
 
-// used by loadMultipleHLSLFiles
+// used by loadAllFiles()
 // @param fileName e.g. "test.hlsl"
-function loadHLSLFile(fileName) {
-    return fetch('/' + fileName)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Failed to load GLSL file: ${fileName}`);
-            }
-            return response.text();
-        })
-        .catch(error => {
-            console.error(error);
-        });
+async function loadHLSLFile(fileName) {
+    try {
+        const response = await fetch(fileName);
+        if (!response.ok) throw new Error(`Failed to fetch ${fileName}`);
+        const code = await response.text();
+        return code;
+    } catch (err) {
+        console.error(err);
+    }
 }
 
-function loadAllFiles() {
+// @param files = strings array
+function appendfile(files, name) {
+    files.push(name + ".glsl");
+    files.push(name + ".hlsl");
+}
 
-    let files = [
-        "docs\\intro_0.hlsl", 
-        "docs\\intro_0.glsl"
+// @param files = strings array
+function appendfileRange(files, name, endIndex) {
+    for(let i = 0; i <= endIndex; ++i)
+        appendfile(files, name + "_" + i);
+}
+
+async function loadAllFiles() {
+
+    // important: use '/', not '\\'
+    const files = [
+//        "docs/intro_0.hlsl", 
+//        "docs/intro_0.glsl",
+//        "docs/gather_docs_1.hlsl",
+//        "docs/gather_docs_1.glsl",
+//       "include/s2h.hlsl",
+//        "include/s2h.glsl"
     ];
+    // GitHub does not allow 'listfiles' so we have to do this manually
+    // or we could generate the list with transpileToGLSL.bat .
+    appendfileRange(files, "docs/2d_docs", 10);
+    appendfileRange(files, "docs/3d_docs", 5);
+    appendfileRange(files, "docs/gather_docs", 6);
+    appendfileRange(files, "docs/intro", 0);
+    appendfileRange(files, "docs/scatter_docs", 7);
+    appendfileRange(files, "docs/ui_docs", 5);
+    appendfile(files, "include/s2h");
+    appendfile(files, "include/s2h_3d");
+    appendfile(files, "include/s2h_scatter");
 
-    for (let el of files)
-        g_HLSLInputCode.set(el, loadHLSLFile(el.replace("\\", "/")));
+    // todo: if this is too slow, we can optimize it
+    for (let el of files) {
+        const code = await loadHLSLFile(el);  // wait for fetch to complete
+        g_HLSLInputCode.set(el.replace("/", "\\"), code); // store the string, not a promise
+    }
 
     /*
     const url = '/listfiles';
