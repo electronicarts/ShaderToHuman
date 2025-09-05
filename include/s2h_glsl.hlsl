@@ -14,6 +14,7 @@
 #define float4x4 mat4
 #define atan2 atan
 #define lerp mix
+#define rsqrt inversesqrt
 #define static
 #define mul(a,b) (a) * (b)
 #define sincos(x,s,c) {s=sin(x);c=cos(x);}

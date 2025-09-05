@@ -32,6 +32,7 @@
 
 
 
+
 /////////////////////////////////////////////////////////////////////////
 //   Shader To Human (S2H) - HLSL/GLSL library for debugging shaders   //
 //    Copyright (c) 2024 Electronic Arts Inc.  All rights reserved.    //
@@ -176,13 +177,13 @@ vec4 s2h_coneIntersect( in vec3 ro, in vec3 rd, in vec3 pa, in vec3 pb, in float
     if( m1<0.0 )
     {
         if( s2h_dot2(oa*m2-rd*m1)<(ra*ra*m2*m2) ) // delayed division
-            return vec4(-m1/m2,-ba*rsqrt(m0));
+            return vec4(-m1/m2,-ba*inversesqrt(m0));
     }
     else if( m9>0.0 )
     {
         float t = -m9/m2;                     // NOT delayed division
         if( s2h_dot2(ob+rd*t)<(rb*rb) )
-            return vec4(t,ba*rsqrt(m0));
+            return vec4(t,ba*inversesqrt(m0));
     }
             
     // body
