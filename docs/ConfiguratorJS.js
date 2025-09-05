@@ -438,7 +438,7 @@ function logTab(key, commentTxt, choiceValueArray) {
         imTxt += '</label>\n';
         ++i;
     })
-    imTxt += '=' + key;
+//    imTxt += '=' + key;
     imTxt += '<hr style="margin:0px">\n';
 //    imTxt += '</br>\n';
 }
