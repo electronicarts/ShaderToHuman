@@ -328,7 +328,16 @@ void s2h_drawSkybox(inout Context3D context)
 
 		// horizon
 		ui.dstColor.rgb = vec3(1,1,1) * clamp(1.0f - pow(abs(d.y), 0.2f),0.0f,1.0f);
-        ui.dstColor.a = 1.0f;
+		ui.dstColor.a = 1.0f;
+
+		// grid
+		{
+			vec2 gridXY = fract(ui.pxPos);
+			gridXY = min(gridXY, vec2(1.0f, 1.0f) - gridXY);
+			// 0 .. 0.5
+			float grid = min(gridXY.x, gridXY.y);
+			ui.dstColor.rgb = mix(ui.dstColor.rgb, vec3(1,1,1), 0.07f * clamp(1.0f - grid * 30.0f,0.0f,1.0f));
+		}
 
 		bool xzAxis = abs(d.x) > abs(d.z);
 

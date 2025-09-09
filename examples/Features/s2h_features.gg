@@ -535,15 +535,15 @@
     ],
     "fileCopies": [
         {
-            "fileName": "../include/s2h.hlsl",
+            "fileName": "../../include/s2h.hlsl",
             "type": "Shader"
         },
         {
-            "fileName": "../include/s2h_scatter.hlsl",
+            "fileName": "../../include/s2h_scatter.hlsl",
             "type": "Shader"
         },
         {
-            "fileName": "../include/s2h_3d.hlsl",
+            "fileName": "../../include/s2h_3d.hlsl",
             "type": "Shader"
         },
         {
@@ -556,8 +556,8 @@
             "resourceTexture": {
                 "name": "A",
                 "editorPos": [
-                    139.0,
-                    -110.0
+                    155.0,
+                    287.0
                 ],
                 "format": {
                     "format": "RGBA8_Unorm_sRGB"
@@ -573,8 +573,8 @@
             "actionComputeShader": {
                 "name": "3DExample",
                 "editorPos": [
-                    469.0,
-                    -110.0
+                    485.0,
+                    287.0
                 ],
                 "linkProperties": [
                     {},
@@ -601,8 +601,8 @@
             "actionComputeShader": {
                 "name": "ScatterTest",
                 "editorPos": [
-                    507.0,
-                    159.0
+                    523.0,
+                    511.0
                 ],
                 "linkProperties": [
                     {},
@@ -658,8 +658,8 @@
             "actionComputeShader": {
                 "name": "GatherTest",
                 "editorPos": [
-                    469.0,
-                    -17.0
+                    485.0,
+                    380.0
                 ],
                 "linkProperties": [
                     {},
@@ -692,8 +692,8 @@
             "actionComputeShader": {
                 "name": "DebugZoomTest",
                 "editorPos": [
-                    971.0,
-                    2.0
+                    987.0,
+                    399.0
                 ],
                 "linkProperties": [
                     {},
@@ -720,8 +720,8 @@
             "resourceTexture": {
                 "name": "B",
                 "editorPos": [
-                    139.0,
-                    -14.0
+                    155.0,
+                    383.0
                 ],
                 "format": {
                     "format": "RGBA8_Unorm_sRGB"
@@ -737,8 +737,8 @@
             "resourceTexture": {
                 "name": "D",
                 "editorPos": [
-                    139.0,
-                    162.0
+                    155.0,
+                    514.0
                 ],
                 "format": {
                     "format": "RGBA8_Unorm_sRGB"
@@ -754,8 +754,8 @@
             "actionComputeShader": {
                 "name": "Clear",
                 "editorPos": [
-                    341.0,
-                    162.0
+                    357.0,
+                    514.0
                 ],
                 "linkProperties": [
                     {},
@@ -782,8 +782,8 @@
             "resourceBuffer": {
                 "name": "UIState",
                 "editorPos": [
-                    123.0,
-                    -206.0
+                    139.0,
+                    191.0
                 ],
                 "transient": false,
                 "format": {

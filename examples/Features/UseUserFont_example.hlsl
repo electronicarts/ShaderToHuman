@@ -14,7 +14,7 @@ float s2h_fontSize() { return 8.0f; }
 
 void s2h_printCharacter(inout struct ContextGather ui, uint ascii);
 
-#include "../include/s2h.hlsl"
+#include "../../include/s2h.hlsl"
 
 void s2h_printCharacter(inout ContextGather ui, uint ascii)
 {

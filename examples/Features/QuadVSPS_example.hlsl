@@ -5,7 +5,7 @@
 
 /*$(ShaderResources)*/
 
-#include "../include/s2h.hlsl"
+#include "../../include/s2h.hlsl"
 #include "QuadCommon.hlsl"
 
 struct VSInput

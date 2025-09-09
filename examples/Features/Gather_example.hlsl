@@ -3,7 +3,7 @@
 //    Copyright (c) 2024 Electronic Arts Inc.  All rights reserved.    //
 /////////////////////////////////////////////////////////////////////////
 
-#include "../include/s2h.hlsl"
+#include "../../include/s2h.hlsl"
 
 // not in include as Gigi does not like $(Variable: in include files
 #ifdef S2H_GLSL

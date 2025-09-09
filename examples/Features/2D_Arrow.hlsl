@@ -3,7 +3,7 @@
 //    Copyright (c) 2024 Electronic Arts Inc.  All rights reserved.    //
 /////////////////////////////////////////////////////////////////////////
 
-#include "../include/s2h.hlsl"
+#include "../../include/s2h.hlsl"
 
 #define PI 3.14159265f
 

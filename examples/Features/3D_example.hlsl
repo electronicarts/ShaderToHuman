@@ -3,8 +3,8 @@
 //    Copyright (c) 2024 Electronic Arts Inc.  All rights reserved.    //
 /////////////////////////////////////////////////////////////////////////
 
-#include "../include/s2h.hlsl"
-#include "../include/s2h_3d.hlsl"
+#include "../../include/s2h.hlsl"
+#include "../../include/s2h_3d.hlsl"
 
 // 1:no Anti-Aliasing, 2:2x2, 3:3x3
 #define AA 3

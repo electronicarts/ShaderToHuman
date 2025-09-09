@@ -3,8 +3,8 @@
 //    Copyright (c) 2024 Electronic Arts Inc.  All rights reserved.    //
 /////////////////////////////////////////////////////////////////////////
 
-#include "../include/s2h.hlsl"
-#include "../include/s2h_scatter.hlsl"
+#include "../../include/s2h.hlsl"
+#include "../../include/s2h_scatter.hlsl"
 
 /*$(ShaderResources)*/
 
