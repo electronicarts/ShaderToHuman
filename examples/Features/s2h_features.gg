@@ -754,8 +754,8 @@
             "actionComputeShader": {
                 "name": "Clear",
                 "editorPos": [
-                    357.0,
-                    514.0
+                    347.0,
+                    511.0
                 ],
                 "linkProperties": [
                     {},
@@ -1147,10 +1147,5 @@
                 }
             }
         }
-    ],
-    "settings": {
-        "common": {
-            "createPDBsAndBinaries": true
-        }
-    }
+    ]
 }

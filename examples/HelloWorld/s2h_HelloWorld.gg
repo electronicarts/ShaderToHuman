@@ -342,7 +342,7 @@
     ],
     "settings": {
         "common": {
-            "createPDBsAndBinaries": true
+            "createPDBsAndBinaries": false
         }
     }
 }
