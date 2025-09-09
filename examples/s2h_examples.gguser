@@ -5,10 +5,6 @@
     },
     "snapshot": {
         "resourceViewNodeIndex": 3,
-        "resourceViewResourceIndex": 3,
-        "cameraAltitudeAzimuth": [
-            0.014472300186753273,
-            5.943691253662109
-        ]
+        "resourceViewResourceIndex": 3
     }
 }

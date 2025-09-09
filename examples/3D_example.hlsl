@@ -114,10 +114,10 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 
 	float3 linearBackground = float3(0, 0, 0);
 
-    float3 linearColor = lerp(linearBackground, float4(tot.rgb, 1), tot.a);
+    float3 linearColor = lerp(linearBackground, tot.rgb, tot.a);
 
     // composite 2D UI on top
-    linearColor = linearColor * (1.0f - ui.dstColor.a) + ui.dstColor;
+    linearColor = linearColor * (1.0f - ui.dstColor.a) + ui.dstColor.rgb;
 
 //	if(pxPos.y < 10 && pxPos.x < 256)
 //		linearColor = s2h_accurateSRGBToLinear(pxPos.xxx / 256.0f);

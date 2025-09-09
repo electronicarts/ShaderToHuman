@@ -327,7 +327,7 @@ void s2h_drawSkybox(inout Context3D context)
 		s2h_init(ui, vec2(fract(px.x / tileX + 0.5f) * tileX, px.y));
 
 		// horizon
-		ui.dstColor.rgb = vec3(clamp(1.0f - pow(abs(d.y), 0.2f),0.0f,1.0f));
+		ui.dstColor.rgb = vec3(1,1,1) * clamp(1.0f - pow(abs(d.y), 0.2f),0.0f,1.0f);
         ui.dstColor.a = 1.0f;
 
 		bool xzAxis = abs(d.x) > abs(d.z);
