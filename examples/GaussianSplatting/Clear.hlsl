@@ -30,14 +30,6 @@
 void mainCS(uint2 DTid : SV_DispatchThreadID)
 {
     float3 background = float3(0.1f, 0.2f, 0.3f) * 0.7f;
-    Output[DTid] = float4(s2h_accurateLinearToSRGB(background), 1.0f);
-	return;
-
-
-
-
-
-
 
     float2 dimensions = /*$(Variable:iFrameBufferSize)*/.xy;
     uint2 pxPos = DTid;
@@ -54,6 +46,18 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
         color = checker ? lightColor : darkColor;
     }
 
+	float3 linearOutput =  background;		// hack
+
+    {
+        ContextGather ui;
+
+        s2h_init(ui, pxPos);
+
+		s2h_drawSRGBRamp(ui, float2(2, 2));
+
+        linearOutput = lerp(linearOutput, float4(ui.dstColor.rgb, 1), ui.dstColor.a);
+    }
+
     Context3D context;
     float3 worldPos;
     {
@@ -65,8 +69,15 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
         worldPos = worldPosHom.xyz / worldPosHom.w;
     }
     s2h_init(context, S2S_CAMERA_POS(), normalize(worldPos - S2S_CAMERA_POS()));
-	s2h_drawSkybox(context);
+
+    // Gigi camera starts at 0,0,0 so we move the content to be in the view
+    float3 offset = float3(0,-1,0);
+
+	context.dstColor.rgb = linearOutput;
+
+    s2h_drawCheckerBoard(context, offset);
+//	s2h_drawSkybox(context);
 	color = context.dstColor.rgb;
 
-    Output[DTid] = float4(color, 1.0f);
+    Output[DTid] = float4(s2h_accurateLinearToSRGB(color), 1.0f);
 }

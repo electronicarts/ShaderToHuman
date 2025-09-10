@@ -128,6 +128,8 @@ void baseCS(uint2 DTid : SV_DispatchThreadID)
         s2h_printLF(ui);
 #endif
 
+		s2h_drawSRGBRamp(ui, float2(2, 2));
+
         linearOutput = lerp(linearOutput, float4(ui.dstColor.rgb, 1), ui.dstColor.a);
     }
 
@@ -135,8 +137,9 @@ void baseCS(uint2 DTid : SV_DispatchThreadID)
 
     // sRGB test ramp/gradient on top of the screen, first 256 pixels should have a ramp of color from 0 to 255 
     // this means we output directly in sRGB space
-    if(DTid.y < 32)
-        sRGBOutput = float4(pxPos.xxx / 256.0f, 1);
+//    if(DTid.y < 32)
+//        sRGBOutput = float4(pxPos.xxx / 256.0f, 1);
+
 
     Output[DTid] = sRGBOutput;
 }
