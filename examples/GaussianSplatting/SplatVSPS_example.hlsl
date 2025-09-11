@@ -214,16 +214,20 @@ PSOutput mainPS(VSOutput input)
 
     uint rndState = initRand(dot(uint3(pixPos,0), uint3(82927, 21313, 1)), input.splatId * 12345 + 0x12345678 + /*$(Variable:frameRandom)*/ * /*$(Variable:iFrame)*/);
 
+	// 0..1
+	float rnd = nextRand(rndState);
+
 	// no MSAA
-//    if(sRGBOutput.a <= nextRand(rndState))
-//		clip(-1);
+#if MSAA == 1
+
+	ret.coverage = 0x1;
+	if(sRGBOutput.a <= rnd)
+		clip(-1);
+#else
 
 	// 4: 4x MSAA
 	// 8: 8x MSAA
 	const uint sampleCount = 8;
-
-	// 0..1
-	float rnd = nextRand(rndState);
 
 //	rnd = 0.5f;
 
@@ -236,8 +240,7 @@ PSOutput mainPS(VSOutput input)
 		ret.coverage = ret.coverage | (ret.coverage << sampleCount);
 		ret.coverage = ret.coverage >> uint((sampleCount - 0.001f) * rnd);
 	}
-//	ret.colorTarget=1;
-//	ret.coverage = 128u;
+#endif
 
 	return ret;
 }
