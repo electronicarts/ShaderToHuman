@@ -22,7 +22,10 @@
 // around sqrt(2), depending on other settings, todo: revise
 #define MIN_PIXEL_RADIUS 1.0f
 
-#define FIXUP_MUL 0.5f
+#define FIXUP_MUL 0.25f
+// 0: off
+// 1: on (not working, dead end?)
+#define WEIGHT_EXPERIMENT 0
 
 struct SplatParams
 {

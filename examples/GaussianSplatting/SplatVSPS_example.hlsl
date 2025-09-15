@@ -236,7 +236,9 @@ PSOutput mainPS(VSOutput input)
 	const uint sampleMask = (1u << sampleCount) - 1;
 
 	// 0..1
-	uint step = floor(saturate(sRGBOutput.a) * (sampleCount));
+//	uint step = floor(saturate(sRGBOutput.a) * (sampleCount));	// no rnd
+//	uint step = floor(saturate(sRGBOutput.a) * (sampleCount - 2) + 1 + rnd);	// always one sample, nice only fopr one splat
+	uint step = floor(saturate(sRGBOutput.a) * (sampleCount - 1) + rnd);	// smooth for 1..8 range, noisy in 0 range for single splat
 	float steps = step / (float)sampleCount;
 
 	uint coverage = 0xff;
@@ -247,6 +249,8 @@ PSOutput mainPS(VSOutput input)
 //	coverage = sampleMask >> (uint)floor(saturate(1-sRGBOutput.a) * (sampleCount - 0.001f) + rnd);	// todo: improve
 //	coverage = sampleMask >> (uint)floor(saturate(1-sRGBOutput.a) * (sampleCount - 0.001f) + 1);	// todo: improve
 	coverage = sampleMask >> (uint)(sampleCount - step);	// todo: improve
+
+
 //	overage = sampleMask >> (uint)quantizedAlpha;	// todo: improve
 
 //	coverage = 0xff;
@@ -259,8 +263,7 @@ PSOutput mainPS(VSOutput input)
 	// remap to be linear
 	fixup = fixup / (1 - sRGBOutput.a);
 
-//	fixup = 1;
-	if(step == 0)
+/*	if(step == 0)
 	{
 		if(sRGBOutput.a * sampleCount <= rnd)
 			coverage = 0;
@@ -270,15 +273,50 @@ PSOutput mainPS(VSOutput input)
 	//	coverage = sampleMask >> (uint)floor(saturate(1-sRGBOutput.a) * (sampleCount - 0.001f) + rnd);	// todo: improve
 		fixup = 1.0f;
 	}
+*/
 
 	ret.colorTarget.a = fixup * FIXUP_MUL;
 
 #else // WEIGHT_EXPERIMENT == 1
 
-	coverage = sampleMask >> (uint)floor(saturate(1-sRGBOutput.a) * (sampleCount - 0.001f) + rnd);	// todo: improve
+//	coverage = sampleMask >> (uint)floor(saturate(1-sRGBOutput.a) * (sampleCount - 0.001f) + rnd);	// todo: improve
+	coverage = sampleMask >> (uint)(sampleCount - step);	// todo: improve
 
 #endif
 
+	// reference: n independent random events
+	if(0)
+	{
+		coverage = 0;
+		for(uint i = 0; i < sampleCount; ++i)
+		{
+			if(sRGBOutput.a > nextRand(rndState))
+				coverage |= 1u << i;
+		}
+	}
+
+	// reference: scramble, slow
+	if(1)
+	{
+		for(uint i = 0; i < 20; ++i)
+		{
+			// 0..sampleCount-1
+			uint bitN = (uint)floor(nextRand(rndState) * sampleCount);
+
+			// flip bit0 with bitN
+			bool old0 = (coverage & 1u) != 0;
+			bool oldN = (coverage & (1u << bitN)) != 0;
+			coverage &= ~1u;
+			coverage &= ~(1u << bitN);
+			if(old0)
+				coverage |= (1u << bitN);			
+			if(oldN)
+				coverage |= 1u;
+
+			coverage = coverage | (coverage << sampleCount);
+			coverage = (coverage >> 1) & sampleMask;
+		}
+	}
 
 	// random offset for overlapping primitives, could be improved further, ideally all bits are independent
 	{
