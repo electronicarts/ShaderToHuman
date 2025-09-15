@@ -151,6 +151,8 @@ VSOutput mainVS(VSInput input)
 
 	SplatParams splatParams = getSplatParams(splatId, /*$(Variable:SplatOffset)*/);
 
+//	uint a = PlyFile[0];
+
     SplatRasterizeParams params;
     bool visible = computeSplatRasterizeParams(splatParams, params, dimensions, worldToClip, viewToClip, worldToView);
 

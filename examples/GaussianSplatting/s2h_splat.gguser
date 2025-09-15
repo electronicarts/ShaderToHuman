@@ -6,14 +6,20 @@
     "snapshot": {
         "resourceViewNodeIndex": 17,
         "resourceViewResourceIndex": 2,
-        "cameraPos": [
-            -10.478591918945313,
-            13.484803199768067,
-            1.702530026435852
-        ],
         "cameraAltitudeAzimuth": [
-            -0.7650851011276245,
-            4.876192092895508
+            -0.0351068377494812,
+            6.261152744293213
+        ],
+        "importedResources": [
+            {
+                "nodeName": "PlyFile",
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "Debug.ply",
+                    "type": "Uint",
+                    "BLASOpaque": true
+                }
+            }
         ],
         "savedVariables": [
             {

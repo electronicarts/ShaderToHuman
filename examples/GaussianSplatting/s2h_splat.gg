@@ -237,7 +237,17 @@
             "name": "SplatTestVS",
             "fileName": "SplatVSPS_example.hlsl",
             "type": "Vertex",
-            "entryPoint": "mainVS"
+            "entryPoint": "mainVS",
+            "resources": [
+                {
+                    "name": "PlyFile",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Uint"
+                    }
+                }
+            ]
         },
         {
             "name": "SplatTestBase",
@@ -722,7 +732,15 @@
                     {},
                     {},
                     {},
+                    {},
                     {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "PlyFile",
+                        "dstNode": "PlyFile",
+                        "dstPin": "resource"
+                    }
                 ],
                 "vertexShader": {
                     "name": "SplatTestVS"
@@ -840,7 +858,15 @@
                     {},
                     {},
                     {},
+                    {},
                     {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "PlyFile",
+                        "dstNode": "PlyFile",
+                        "dstPin": "resource"
+                    }
                 ],
                 "hideInViewer": true,
                 "vertexShader": {
@@ -991,6 +1017,20 @@
                     {},
                     {}
                 ]
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "PlyFile",
+                "editorPos": [
+                    267.0,
+                    130.0
+                ],
+                "transient": false,
+                "visibility": "Imported",
+                "format": {
+                    "type": "Uint"
+                }
             }
         }
     ]
