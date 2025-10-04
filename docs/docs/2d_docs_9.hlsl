@@ -148,12 +148,8 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 
 
 
-    // todo
-
-
-
-
-
+    s2h_drawArrow(ui, float2(100, 50), float2(200, 50), float4(1,0,1,1), 25.0f, 25.0f);
+    s2h_drawArrow(ui, float2(300, 50), float2(200, 50), float4(0,0,1,1), 25.0f, 25.0f);
 
     float3 background = float3(0.7f, 0.4f, 0.4f);
     float3 linearColor = background * (1.0f - ui.dstColor.a) + ui.dstColor.rgb;

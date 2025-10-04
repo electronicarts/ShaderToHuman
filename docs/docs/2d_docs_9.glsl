@@ -183,12 +183,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
 
 
-    // todo
-
-
-
-
-
+    s2h_drawArrow(ui, vec2(100, 50), vec2(200, 50), vec4(1,0,1,1), 25.0f, 25.0f);
+    s2h_drawArrow(ui, vec2(300, 50), vec2(200, 50), vec4(0,0,1,1), 25.0f, 25.0f);
 
     vec3 background = vec3(0.7f, 0.4f, 0.4f);
     vec3 linearColor = background * (1.0f - ui.dstColor.a) + ui.dstColor.rgb;

@@ -691,7 +691,6 @@ void s2h_drawArrow(inout ContextGather ui, vec2 pxStart, vec2 pxEnd, vec4 color,
     direction = normalize(pxEnd - pxStart);
 
     ui.scale = 2.0f;
-    s2h_printFloat(ui, 1234.0f);
     const float Thickness = 10.0f;
 
     vec2 lineStart = pxStart;
