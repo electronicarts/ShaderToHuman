@@ -1,8 +1,8 @@
 # Shader To Human (S2H) - HLSL/GLSL library for debugging shaders
 
 This easy to integrate tool is designed to help engineers with shader writing and debugging.
-Documentation and examples get you started quickly. With a shader hot reloading environment like Gigi rapid prototyping becomes straightforward.
-The [Interactive Documentation](https://electronicarts.github.io/ShaderToHuman) shows show to use the command in GLSL and HLSL.
+Documentation and examples get you started quickly. With a shader hot reloading environment like Gigi - rapid prototyping becomes straightforward.
+The [Interactive Documentation](https://electronicarts.github.io/ShaderToHuman) shows how to use the library in GLSL and HLSL.
 You can use it to use PrintF debugging, draw 2d and 3d shapes with few lines of code. No C++ code changes required.
 
 ![Screenshot](images/teaser.png)
