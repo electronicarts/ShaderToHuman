@@ -64,7 +64,7 @@ documentation pages.
 
 To run the viewer unit tests, from inside the viewer select File->Run Python Script and choose **unittests/GigiTest.py**.  It should report that it has zero errors.
 
-## SEED
+##
 
 <div align="center">
 <b>Search for Extraordinary Experiences Division (SEED) - Electronic Arts
