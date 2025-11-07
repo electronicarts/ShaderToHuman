@@ -1110,7 +1110,7 @@ void s2h_function(inout ContextGather ui, uint functionId, float4 backgroundColo
 		float pxY = (1.0f - (y - rangeY.x) / (rangeY.y - rangeY.x)) * pxSize.y; 
  
 		if(pxY < localPos.y) 
-			ui.dstColor = lerp(ui.dstColor, float4(ui.textColor.rgb, 1), ui.textColor.a * (1.0f - ui.dstColor.a));	 
+			ui.dstColor = lerp(ui.dstColor, float4(ui.textColor.rgb, 1), ui.textColor.a);
 	} 
  
 	s2h_printLF(ui); 
