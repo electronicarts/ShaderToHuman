@@ -71,8 +71,6 @@ To run the viewer unit tests, from inside the viewer select File->Run Python Scr
 <br>
 <a href="https://seed.ea.com">seed.ea.com</a>
 <br>
-<a href="https://seed.ea.com"><img src="./seed-logo.png" width="150px"></a>
-<br>
 SEED is a pioneering group within Electronic Arts, combining creativity with applied research.</b> <br>
 We explore, build, and help define the future of interactive entertainment.
 </p>
