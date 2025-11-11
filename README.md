@@ -4,7 +4,7 @@ This tool helps you with shader writing and debugging. It's meant to be used for
 as it was optimized for ease of integration (~ one file, few lines of code) and not render speed for complex UI.
 
 We suggest you browse the [interactive documentation](https://electronicarts.github.io/ShaderToHuman).
-You can explore more samples in [Gigi](https://github.com/electronicarts/gigi) (Search in GigiBrowser for "Shader To Human") and you will see how
+You can explore more samples in [Gigi](https://github.com/electronicarts/gigi) (Search in GigiBrowser for "Human") and you will see how
 rapid prototyping in shaders becomes straightforward. Use PrintF debugging, draw a watch window in the viewport or use 
 2d and 3d shapes with ease. No C++ code changes, no buffer setup or content setup required.
 
