@@ -323,7 +323,7 @@ function logText(txt) {
 function logImage(src, alt) {
     if(!alt)
         alt = src; 
-    imTxt += '<img src="' + src + '" alt="' + alt + '"></img>\n'
+	imTxt += '<img src="' + src + '" style="width:75%; height:75%;" alt="' + alt + '"></img>\n'
 }
 
 
