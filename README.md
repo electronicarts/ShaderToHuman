@@ -8,7 +8,7 @@ You can explore more samples in [Gigi](https://github.com/electronicarts/gigi) (
 rapid prototyping in shaders becomes straightforward. Use PrintF debugging, draw a watch window in the viewport or use 
 2d and 3d shapes with ease. No C++ code changes, no buffer setup or content setup required.
 
-Videos and presentation: ![Comming soon](https://graphicsprogrammingconference.com/2025/#shadertohuman-s2h-hlsl-glsl-library-for-debugging-shaders)
+Videos and presentation: [Coming soon](https://graphicsprogrammingconference.com/2025)
 
 ![Screenshot](images/teaser.png)
 
