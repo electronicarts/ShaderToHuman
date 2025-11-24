@@ -49,6 +49,7 @@ PSOutput mainPS(VSOutput_Splat input)
 		float d = min(m.x, m.y);
 		bool binaryTest = d < 0.01f;
 		linearOutput = lerp(linearOutput, float4(1, 0, 1, 1), binaryTest * 0.4f);
+		sRGBOutput.a = 1;
 	}
 
 	PSOutput ret = (PSOutput)0;

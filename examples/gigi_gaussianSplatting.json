@@ -1,0 +1,10 @@
+{
+	"Title": "Shader To Human (S2H) Gaussian Splatting",
+	"Description": "Gaussian Splatting using vertex and pixel shader rasterizing a oriented quad. This sample avoid sorting by using a stochastic 8x MSAA buffer. The MSAA samples reduce noise. This could be improved further with shader optimizations and some form of TemporalAA or denoising. It demonstrates the use of Shader To Human (S2H). This tool helps you with shader writing and debugging. It's meant to be used for small specific use cases (printing or drawing a few number, 2D or 3D elements) as it was optimized for ease of integration (~ one file, few lines of code).",
+	"Author": "Martin Mittring, Anushka Nair",
+	"Tags": "Utility,debugging",
+	"Technique": "examples/GaussianSplatting/s2h_splat.gg",
+	"Website": "https://github.com/electronicarts/ShaderToHuman",
+	"Screenshot": "images/gaussianSplatting.png",
+	"GigiVersion": "1.0"
+}
