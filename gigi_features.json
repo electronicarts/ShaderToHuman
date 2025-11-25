@@ -3,8 +3,9 @@
 	"Description": "Examples of all the features in Shader To Human (S2H). S2H is a tool that helps you with shader writing and debugging. It's meant to be used for small specific use cases (printing or drawing a few number, 2D or 3D elements) as it was optimized for ease of integration (~ one file, few lines of code).",
 	"Author": "Martin Mittring, Anushka Nair",
 	"Tags": "Utility,debugging",
-	"Technique": "examples/s2h_examples.gg",
+	"Technique": "examples/Features/s2h_examples.gg",
 	"Website": "https://github.com/electronicarts/ShaderToHuman",
 	"Screenshot": "images/teaser.png",
-	"GigiVersion": "1.0"
+	"GigiVersion": "1.0",
+	"License": "LICENSE.txt"
 }

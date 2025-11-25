@@ -6,5 +6,6 @@
 	"Technique": "examples/GaussianSplatting/s2h_splat.gg",
 	"Website": "https://github.com/electronicarts/ShaderToHuman",
 	"Screenshot": "images/gaussianSplatting.png",
-	"GigiVersion": "1.0"
+	"GigiVersion": "1.0",
+	"License": "LICENSE.txt"
 }
