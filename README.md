@@ -53,6 +53,27 @@ The source code is released under an open license as detailed in License.txt.
 ## Project status
 Functional, Open Source
 
+## To do:
+With task size in days or hours for a some specific (value does not matter but ratio between tasks should be about right) programmer.
+
+1) 4h Pass text in string literals e.g. (ui, “text”) vs (ui, _t, _e, _x, _t) as optional API (for modern HLSL only) [link](https://github.com/GPUOpen-LibrariesAndSDKs/WorkGraphPlayground/blob/main/tutorials/tutorial-0/HelloWorkGraphs.hlsl)
+2) 1d Fix table and function plotting for GLSL. Seems GLSL forward declaration of functions is different from HLSL and we have to find a different solution
+3) 1d Implement a 80x25 text screen optional API (another .hlsl include file) for better performance with similar functions as it gather and scatter API. A simple start would just write ASCII characters into a uint per character (80x25*4 bytes). We can store the characters and text + background color. A post process or quad pixel shader can project the final text screen (80x25 * 8x8 char pixels), ideally with a C64 style border. Vertical scrolling on bottom of screen would be nice but not needed. It could be implemented without a lot of memory copies if we implement a cyclic view into the memory (store start Y, scrolling is simply ).
+4) 1h Add vertical slider
+5) 1h Add 2d slider (x and y position in a box)
+6) 4h Horizontal and vertical scroll bar (drag bars show the size of the view)
+7) 1d Combine scroll bars with table view to scroll larger views vertically, optional as table API should not get more complex
+8) 5d Implement for other APIs ? e.g. WebGPU, CUDA,   only if there is interest
+9) 3d Documentation only offer GLSL fragment shader and HLSL compute shader, we should add HLSL pixel shader.
+10) 5d Add working GLSL samples other than WebGL (browsers might emulate with DirectX), ideally OpenGL and Vulkan
+11) 7d Optional API (another .hlsl include file) to record operations to be persistent (Atomic to serialize function id and parameters, reader to play back the commands)
+12) 1h Polish documentation for triangle and arrow to show the available options
+13) 2d Make all documentation interactive (e.g. respond to mouse) or animated (time dependent)
+14) 3d Fix documentation needs a while to compile shaders before it can show content.
+15) 4h Interactive texture zoom (pixelated) in postprocess with color RGB debugger
+16) 3d Interactive buffer debug with hex / float / int, scrollbars for large content
+17) 1d Add drawOBB() (3d oriented bounding box, passing in position and 3x3 base, can transform the ray and use drawAABB())
+
 ## Contributing
 
 Before you can contribute, EA must have a Contributor License Agreement (CLA) on file that has been signed by each contributor. You can sign here: http://bit.ly/electronic-arts-cla
