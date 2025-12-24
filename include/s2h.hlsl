@@ -659,8 +659,6 @@ void s2h_drawArrow(inout ContextGather ui, float2 pxStart, float2 pxEnd, float4 
     float2 direction = float2(0,1);
     direction = normalize(pxEnd - pxStart);
 
-    ui.scale = 2.0f;
-    s2h_printFloat(ui, 1234.0f);
     const float Thickness = 10.0f;
 
     float2 lineStart = pxStart;
