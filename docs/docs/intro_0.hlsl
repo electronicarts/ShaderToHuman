@@ -57,7 +57,10 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
     s2h_printTxt(ui, _S, _2, _H, _UNDERSCORE);
     s2h_printTxt(ui, _V, _E, _R, _S);
     s2h_printTxt(ui, _I, _O, _N, _COLON);
-    s2h_printInt(ui, 10);
+	// We use "_S2H_VERSION" which is "static const uint",
+	// not "S2H_VERSION" as that is only supported on platforms that have
+	// a preprocessor (define support).
+    s2h_printInt(ui, _S2H_VERSION);
 
     fragColor = float4(ui.dstColor.rgb, 1);
 }

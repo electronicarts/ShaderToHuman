@@ -9,13 +9,15 @@
 // {
 //   struct ContextScatter ui;
 //   s2h_init(ui);
-//   s2h_printTxt(ui, 'A', 'B');
+//   s2h_printTxt(ui, _A, _B);
 // }
 // void onGfxForAllScatter(int2 pxPos, float4 color) 
 // {
 //	 g_computeOutput[pxPos] = color;
 // }
 
+#ifndef S2H_SCATTER_INCLUDE
+#define S2H_SCATTER_INCLUDE
 
 // documentation:
 struct ContextScatter
@@ -239,3 +241,5 @@ void s2h_printDisc(inout ContextScatter ui, float4 color)
 
 	ui.pxCursor.x += 8 * ui.scale;
 }
+
+#endif // S2H_SCATTER_INCLUDE

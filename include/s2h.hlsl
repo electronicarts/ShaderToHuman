@@ -3,9 +3,6 @@
 //  Copyright (c) 2024-2025 Electronic Arts Inc.  All rights reserved.  //
 //////////////////////////////////////////////////////////////////////////
 
-// Any potentially API breaking update we should increase the version by 1 allowing other code to adapt to S2H.
-#define S2H_VERSION 10
-
 // pixel shader or compute shader looping through all pixels
 
 // Example:
@@ -21,6 +18,12 @@
 //   // for correct AntiAliasing 
 //   srgbColor = float4(s2h_accurateLinearToSRGB(linearColor.rgb), 1);
 // }
+
+#ifndef S2H_INCLUDE
+#define S2H_INCLUDE
+
+// Any potentially API breaking update we should increase the version by 1 allowing other code to adapt to S2H.
+#define S2H_VERSION 11
 
 // documentation:
 struct ContextGather
@@ -379,6 +382,7 @@ static const uint _6 = 54u;
 static const uint _7 = 55u;
 static const uint _8 = 56u;
 static const uint _9 = 57u;
+static const int _S2H_VERSION = S2H_VERSION;
 
 void s2h_init(out ContextGather ui, float2 inPxPos)
 {
@@ -1162,3 +1166,5 @@ float3 s2h_colorRampRGB(float value)
 		saturate(1.0f - abs(value - 0.5f) * 2.0f),
 		saturate(1.0f - abs(value - 1.0f) * 2.0f));
 }
+
+#endif // S2H_INCLUDE 

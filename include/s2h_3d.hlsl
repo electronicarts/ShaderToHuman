@@ -12,6 +12,9 @@
 //   s2h_init(context);
 // }
 
+#ifndef S2H_3D_INCLUDE
+#define S2H_3D_INCLUDE
+
 struct Context3D
 { 
     // ray origin
@@ -347,3 +350,5 @@ void sceneWithShadows(inout Context3D context)
         context.dstColor.rgb = lerp(litScene.rgb, float3(0.0, 0.0, 0.0), shadowFactor);
     }
 }
+
+#endif // S2H_3D_INCLUDE

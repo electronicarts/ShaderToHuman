@@ -73,6 +73,8 @@ Smaller task with the size in days (d) or hours (h) for a some programmer (the v
 16) 3d Interactive buffer debug with hex / float / int, scrollbars for large content
 17) 1d Add drawOBB() (3d oriented bounding box, passing in position and 3x3 base, can transform the ray and use drawAABB())
 18) 5d Implement various reproducible Benchmarks for runtime and compile time on different GPUs and APIs 
+19) transpileToGLSL.bat uses hard coded path to cl.exe
+
 ## Contributing
 
 Before you can contribute, EA must have a Contributor License Agreement (CLA) on file that has been signed by each contributor. You can sign here: http://bit.ly/electronic-arts-cla
@@ -85,6 +87,20 @@ With each pull request, besides testing any functionality you are touching, plea
 documentation pages.
 
 To run the viewer unit tests, from inside the viewer select File->Run Python Script and choose **unittests/GigiTest.py**.  It should report that it has zero errors.
+
+## How to make a release
+* run transpileToGLSL.bat. There should be no errors (cl.exe path might not be right on your system)
+* run startLocalServer.bat. Open the printed link in Chrome.
+* Click the tab "Get Started". Verify the correct version number is rendered. Verify the other tabs.
+* Open "examples\Features\s2h_features.gg" in Gigi, no errors, verify visuals
+* Open "unittests\GigiTest.py" from Gigi "Run Python script", verify no errors, update gold images if needed
+* Update Version in README.md
+* git pull / add / commit / push
+* Verify online documentation works like the local version
+
+## Versions Date Changes
+* 10 first public release
+* 11 1/16/2025 added include guards 
 
 ##
 
