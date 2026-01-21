@@ -144,7 +144,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
                 ui.buttonColor = vec4(0,1,0,1);
                 if(s2h_radioButton(ui, UIState[0].UIRadioState == 2u) && leftMouse) UIState[0].UIRadioState = 2u;
                 ui.buttonColor = vec4(0,0,1,1);
-                if(s2h_radioButton(ui, UIState[0].UIRadioState == 3u) && leftMouse) UIState[0].UIRadioState = 39u;
+                if(s2h_radioButton(ui, UIState[0].UIRadioState == 3u) && leftMouse) UIState[0].UIRadioState = 3u;
                 ui.buttonColor = backup;
             }
         }

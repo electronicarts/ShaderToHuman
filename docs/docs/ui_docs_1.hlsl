@@ -109,7 +109,7 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
                 ui.buttonColor = float4(0,1,0,1);
                 if(s2h_radioButton(ui, UIState[0].UIRadioState == 2u) && leftMouse) UIState[0].UIRadioState = 2u;
                 ui.buttonColor = float4(0,0,1,1);
-                if(s2h_radioButton(ui, UIState[0].UIRadioState == 3u) && leftMouse) UIState[0].UIRadioState = 39u;
+                if(s2h_radioButton(ui, UIState[0].UIRadioState == 3u) && leftMouse) UIState[0].UIRadioState = 3u;
                 ui.buttonColor = backup;
             }
         }
