@@ -194,10 +194,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
         {
             s2h_printTxt(ui, _SPACE, _SPACE);
-            s2h_sliderRGBA(ui, 8u, UIState[0].colorSlider0);
+            s2h_sliderRGBA(ui, 8u, UIState[0].colorSlider1);
             s2h_printTxt(ui, _SPACE, _s, _2, _h, _UNDERSCORE);
             s2h_printTxt(ui, _s, _l, _i, _d, _e, _r);
-            s2h_printTxt(ui, _R, _G, _B);
+            s2h_printTxt(ui, _R, _G, _B, _A);
             s2h_printLF(ui);
             s2h_printLF(ui);
             s2h_printLF(ui);
