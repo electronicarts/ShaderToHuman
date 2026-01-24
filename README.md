@@ -72,8 +72,7 @@ Smaller task with the size in days (d) or hours (h) for a some programmer (the v
 15) 4h Interactive texture zoom (pixelated) in postprocess with color RGB debugger
 16) 3d Interactive buffer debug with hex / float / int, scrollbars for large content
 17) 1d Add drawOBB() (3d oriented bounding box, passing in position and 3x3 base, can transform the ray and use drawAABB())
-18) 5d Implement various reproducible Benchmarks for runtime and compile time on different GPUs and APIs 
-19) transpileToGLSL.bat uses hard coded path to cl.exe
+18) 5d Implement various reproducible Benchmarks for runtime and compile time on different GPUs and APIs
 
 ## Contributing
 
