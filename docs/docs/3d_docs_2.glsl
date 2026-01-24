@@ -166,7 +166,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
             worldPos = worldPosHom.xyz / worldPosHom.w;
         }
 
-        s2h_init(context, ((u_worldFromView * vec4(0, 0, 0, 1)).xyz), normalize(worldPos - context.ro));
+        vec3 ro = ((u_worldFromView * vec4(0, 0, 0, 1)).xyz);
+        s2h_init(context, ro, normalize(worldPos - ro));
 
         // uncomment to composite with former pass
         context.dstColor = vec4(computeSkyColor(context), 1);
