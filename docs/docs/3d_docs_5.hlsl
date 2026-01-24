@@ -131,7 +131,8 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
             worldPos = worldPosHom.xyz / worldPosHom.w;
         }
 
-        s2h_init(context, S2S_CAMERA_POS(), normalize(worldPos - context.ro));
+        vec3 ro = S2S_CAMERA_POS();
+        s2h_init(context, ro, normalize(worldPos - ro));
 
         // uncomment to composite with former pass
         context.dstColor = float4(computeSkyColor(context), 1);
