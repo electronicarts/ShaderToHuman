@@ -1144,17 +1144,17 @@ float3 s2h_accurateSRGBToLinear(float3 sRGBCol)
 
 float3 s2h_indexToColor(uint index)
 {
-	uint a = index & (1u << 0u);
-	uint d = index & (1u << 1u);
-	uint g = index & (1u << 2u);
+	uint a = (index >> 0u) & 1u;
+	uint d = (index >> 1u) & 1u;
+	uint g = (index >> 2u) & 1u;
 
-	uint b = index & (1u << 3u);
-	uint e = index & (1u << 4u);
-	uint h = index & (1u << 5u);
+	uint b = (index >> 3u) & 1u;
+	uint e = (index >> 4u) & 1u;
+	uint h = (index >> 5u) & 1u;
 
-	uint c = index & (1u << 6u);
-	uint f = index & (1u << 7u);
-	uint i = index & (1u << 8u);
+	uint c = (index >> 6u) & 1u;
+	uint f = (index >> 7u) & 1u;
+	uint i = (index >> 8u) & 1u;
 
 	return float3(a * 4u + b * 2u + c, d * 4u + e * 2u + f, g * 4u + h * 2u + i) / 7.0f;
 }
