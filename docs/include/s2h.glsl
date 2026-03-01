@@ -211,6 +211,8 @@ void s2h_sliderRGBA(inout ContextGather ui, uint widthInCharacters, inout vec4 v
 
 
 
+
+
 // helper functions ----------------------------------------------------------------------
 
 // slow but accurate
@@ -1058,6 +1060,34 @@ void s2h_sliderRGBA(inout ContextGather ui, uint widthInCharacters, inout vec4 v
 }
 
 // not yet for GLSL 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
