@@ -143,46 +143,6 @@
             "visibility": "Host"
         },
         {
-            "name": "rayStart",
-            "type": "Float",
-            "visibility": "User",
-            "UISettings": {
-                "UIHint": "Slider",
-                "min": "0",
-                "max": "100"
-            }
-        },
-        {
-            "name": "rayEnd",
-            "type": "Float",
-            "dflt": "10000",
-            "visibility": "User",
-            "UISettings": {
-                "UIHint": "Slider",
-                "min": "0",
-                "max": "100"
-            }
-        },
-        {
-            "name": "SplatOffset",
-            "type": "Float3",
-            "visibility": "User",
-            "UISettings": {
-                "UIHint": "Slider",
-                "min": "-5",
-                "max": "5"
-            }
-        },
-        {
-            "name": "frameRandom",
-            "type": "Bool",
-            "dflt": "true",
-            "visibility": "User",
-            "UISettings": {
-                "UIHint": "Drag"
-            }
-        },
-        {
             "name": "iResolution",
             "type": "Float3",
             "dflt": "0.0f, 0.0f, 0.0f",
