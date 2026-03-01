@@ -76,7 +76,7 @@ void s2h_animMoveTo(inout s2h_AnimContext anim, float deltaTime, inout float2 po
 static const float2 g_A = float2(100.0f, 100.0f);
 static const float2 g_B = float2(200.0f, 100.0f);
 static const float2 g_C = float2(200.0f, 200.0f);
-static const float2 g_D = float2(200.0f, 300.0f);
+static const float2 g_D = float2(230.0f, 280.0f);
 
 float2 computeCirclePos(float absTime)
 {
@@ -141,50 +141,75 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 	// to make time progress faster (>1)
 	const float timeScale = 4.0f;
 
-//	float currentTime = /*$(Variable:GeneralPurposeTweak)*/;
-
 	// 0 .. maxTime
 	float currentTime = frac(S2S_TIME() * timeScale / maxTime) * maxTime;
 	
 	// in characters
-	const int2 functionCharSize = int2(80, 10);
+	const int2 functionCharSize = int2(80, 15);
 	const float2 timeRange = float2(0.0f, 100.0f);
+	const float2 valueRange = float2(50, 350); // the points ABCD use this x and y range plus some padding
 	float scaledFontSize = s2h_fontSize() * ui.scale;
 	// in pixels
 	int2 functionPxSize = functionCharSize * scaledFontSize;
 	
-	// ###### s2h_function x red  
-	float2 userPos = s2h_function(ui, 0, float4(0.5f, 0, 0, 1), functionCharSize, timeRange, float2(0, 400));
+	float2 functionCursorPos = ui.pxCursor;
+	
+	// ###### s2h_function x red
+	ui.textColor = float4(1,0,0,1);
+	float2 userPos = s2h_function(ui, 0, float4(0.1f, 0.1f, 0.1f, 1), functionCharSize, timeRange, valueRange, 1);
 	
 	if (userPos.x != S2H_FLT_MAX)
 		currentTime = userPos.x;
+
+	// draw 2 functions on top of each other
+	ui.pxCursor = functionCursorPos;
 	
 	// ###### s2h_function y green
-	s2h_function(ui, 1, float4(0, 0.5f, 0, 1), functionCharSize, timeRange, float2(0, 400));
+	ui.textColor = float4(0, 1, 0, 1);
+	s2h_function(ui, 1, 0.0f, functionCharSize, timeRange, valueRange, 1);
 
 	float currentTimePx = ui.pxCursor.x + invLerp(timeRange.x, timeRange.y, currentTime) * functionPxSize.x;
 
-	s2h_drawLine(ui, float2(currentTimePx, ui.pxCursor.y + 10), float2(currentTimePx, ui.pxCursor.y - 2 * functionPxSize.y - 10), 1);
-//	s2h_printLF(ui);
-//	s2h_printFloat(ui, currentTimePx);
+	// white
+	ui.textColor = 1.0f;
+
+	s2h_drawLine(ui, float2(currentTimePx, ui.pxCursor.y + 10), float2(currentTimePx, ui.pxCursor.y - functionPxSize.y - 10), 1);
 
 	s2h_setCursor(ui, float2(currentTimePx, ui.pxCursor.y + 20));
+	s2h_printTxt(ui, _t, _EQUAL);
 	s2h_printFloat(ui, currentTime);
 
 	float2 circlePos = computeCirclePos(currentTime);
 
-//	s2h_drawCrosshair(ui, pos, 20, 1);
-	s2h_drawCircle(ui, circlePos, 15, 1);
+	s2h_drawCircle(ui, circlePos, 16.0f, 1);
 	
-//	getCirclePos();
+	s2h_setScale(ui, 2u);
+
+	ui.textColor = float4(1,0,0,1);
+	s2h_setCursor(ui, float2(400, 40));
+	s2h_printTxt(ui, _X, _EQUAL);
+	s2h_printFloat(ui, circlePos.x);
+	s2h_printLF(ui);
+	ui.textColor = float4(0, 1, 0, 1);
+	s2h_printTxt(ui, _Y, _EQUAL);
+	s2h_printFloat(ui, circlePos.y);
 	 
-	s2h_setCursor(ui, g_A - 3.5f);
+	// grey
+	ui.textColor = float4(0.5f, 0.5f, 0.5f, 1.0f);
+
+	// ABCD lines
+	s2h_drawLine(ui, g_A, g_B, 0.5f);
+	s2h_drawLine(ui, g_B, g_C, 0.5f);
+	s2h_drawLine(ui, g_C, g_D, 0.5f);
+
+	// ABCD names
+	s2h_setCursor(ui, g_A - 8 + 1);
 	s2h_printTxt(ui, _A);
-	s2h_setCursor(ui, g_B - 3.5f);
+	s2h_setCursor(ui, g_B - 8 + 1);
 	s2h_printTxt(ui, _B);
-	s2h_setCursor(ui, g_C - 3.5f);
+	s2h_setCursor(ui, g_C - 8 + 1);
 	s2h_printTxt(ui, _C);
-	s2h_setCursor(ui, g_D - 3.5f);
+	s2h_setCursor(ui, g_D - 8 + 1);
 	s2h_printTxt(ui, _D);
 	
     float4 background = float4(0.1f, 0.1f, 0.3f, 1.0f);

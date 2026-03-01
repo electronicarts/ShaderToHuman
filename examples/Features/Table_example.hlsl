@@ -130,7 +130,18 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
         ui.textColor.rgb = float3(1,1,1);
         float2 rangeX = float2(0, 3.14159265f * 2);
         float2 rangeY = float2(-1.3f, 1.3f);
-        s2h_function(ui, 0, float4(0,0,0,0.45f), int2(22, 8), rangeX, rangeY);
+        
+		float2 functionPos = ui.pxCursor;
+		
+		ui.textColor = float4(1.0f, 0.0f, 0.0f, 1.0f);
+		s2h_function(ui, 0, float4(0,0,0,0.45f), int2(22, 8), rangeX, rangeY, 0);
+		s2h_setCursor(ui, functionPos);
+		// background is 0.0f means fully see through
+		// lineColor is 1.0f which is opaque white
+		ui.textColor = 1.0f;
+		// Note: This could be faster and with less code if done in one function. We could change the API.
+		s2h_function(ui, 0, 0.0f, int2(22, 8), rangeX, rangeY, 1);
+		ui.textColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
 
         ui.textColor.rgb = float3(0, 0, 0);
         s2h_printTxt(ui, 'x', ':', ' ');

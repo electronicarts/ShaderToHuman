@@ -173,8 +173,9 @@ float s2h_floatLookupFloat(uint functionId, float x);
 // required you to implement s2h_floatLookupFloat()
 // @param rangeX float2(left, right) e.g. float2(0, 2.0f * 3.1415f)
 // @param rangeY float2(top, bottom) e.g. float2(-1, 1)
+// @param mode 0:fill under function, 1:line
 // @return float2(x, y) in the the defined (rangeX.x..rangeX.y, rangeY.x..rangeY.y) or (S2H_FLT_MAX, S2H_FLT_MAX)
-float2 s2h_function(inout ContextGather ui, uint functionId, float4 backgroundColor, int2 sizeInCharacters, float2 rangeX, float2 rangeY);
+float2 s2h_function(inout ContextGather ui, uint functionId, float4 backgroundColor, int2 sizeInCharacters, float2 rangeX, float2 rangeY, int mode);
 #endif // S2H_GLSL
 
 // helper functions ----------------------------------------------------------------------
@@ -1089,7 +1090,7 @@ void s2h_tableFloat(inout ContextGather ui, uint column, float4 backgroundColor,
 	} 
 } 
  
-float2 s2h_function(inout ContextGather ui, uint functionId, float4 backgroundColor, int2 sizeInCharacters, float2 rangeX, float2 rangeY)
+float2 s2h_function(inout ContextGather ui, uint functionId, float4 backgroundColor, int2 sizeInCharacters, float2 rangeX, float2 rangeY, int mode)
 { 
 	float scaledFontSize = s2h_fontSize() * ui.scale;
 
@@ -1109,13 +1110,29 @@ float2 s2h_function(inout ContextGather ui, uint functionId, float4 backgroundCo
 		ui.pxCursor.y = backup.y + floor(localPos.y / scaledFontSize) * scaledFontSize; 
  
 		// rangeY.x .. rangeY.y
-		float y = s2h_floatLookupFloat(functionId, x);
+		float y0 = s2h_floatLookupFloat(functionId, x);
+		// value one pixel to the right
+		float y1 = s2h_floatLookupFloat(functionId, x + 1.0f / pxSize.x * (rangeX.y - rangeX.x));
 
 		// 0 .. pxSize.y
-		float pxY = (1.0f - (y - rangeY.x) / (rangeY.y - rangeY.x)) * pxSize.y; 
- 
-		if(pxY < localPos.y) 
-			ui.dstColor = lerp(ui.dstColor, float4(ui.textColor.rgb, 1), ui.textColor.a);
+		float pxY0 = (1.0f - (y0 - rangeY.x) / (rangeY.y - rangeY.x)) * pxSize.y; 
+		
+		if (mode == 0)
+		{
+			// fill under the function
+			if (pxY0 < localPos.y) 
+				ui.dstColor = lerp(ui.dstColor, float4(ui.textColor.rgb, 1), ui.textColor.a);
+		}
+		else if(mode == 1)
+		{
+			float pxY1 = (1.0f - (y1 - rangeY.x) / (rangeY.y - rangeY.x)) * pxSize.y;
+			float pxMinY = min(pxY0, pxY1);
+			float pxMaxY = max(pxY0, pxY1);
+
+			// line
+			if (localPos.y >= pxMinY && localPos.y <= pxMaxY + 1) 
+				ui.dstColor = lerp(ui.dstColor, float4(ui.textColor.rgb, 1), ui.textColor.a);
+		}
 	} 
 
 	// (0,0)..(1,1) if inside
