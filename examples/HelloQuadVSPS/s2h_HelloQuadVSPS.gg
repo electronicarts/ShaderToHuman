@@ -1,8 +1,8 @@
 {
     "$schema": "gigischema.json",
     "name": "ShaderToHuman Examples",
-    "comment": "S2H : Shader To Human\nprintf + more\n\nGather: A thread per pixel computes a color\nScatter: One  thread write to memory\n2D: Vector graphics primitives\n3D: Ray tracing primitives",
-    "version": "1.0",
+    "comment": "S2H : Shader To Human\nprintf + more\n\nGather: A thread per pixel computes a color\nScatter: One  thread write to memory\n2D: Vector graphics primitives\n3D: Ray tracing primitive",
+    "version": "1.01",
     "variables": [
         {
             "name": "iFrameBufferSize",
@@ -203,30 +203,16 @@
     ],
     "shaders": [
         {
-            "name": "HelloWorld",
-            "fileName": "HelloWorld.hlsl",
-            "entryPoint": "mainCS",
-            "resources": [
-                {
-                    "name": "Output",
-                    "access": "UAV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                },
-                {
-                    "name": "UIState",
-                    "access": "UAV",
-                    "type": "Buffer",
-                    "buffer": {
-                        "typeStruct": {
-                            "name": "UIState"
-                        },
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ]
+            "name": "HelloWorldPS",
+            "fileName": "HelloWorldPS.hlsl",
+            "type": "Pixel",
+            "entryPoint": "mainPS"
+        },
+        {
+            "name": "HelloWorldVS",
+            "fileName": "HelloWorldVS.hlsl",
+            "type": "Vertex",
+            "entryPoint": "mainVS"
         }
     ],
     "structs": [
@@ -274,40 +260,6 @@
     ],
     "nodes": [
         {
-            "actionComputeShader": {
-                "name": "HelloWorld",
-                "editorPos": [
-                    469.0,
-                    -17.0
-                ],
-                "linkProperties": [
-                    {},
-                    {},
-                    {}
-                ],
-                "connections": [
-                    {
-                        "srcPin": "Output",
-                        "dstNode": "B",
-                        "dstPin": "resource"
-                    },
-                    {
-                        "srcPin": "UIState",
-                        "dstNode": "UIState",
-                        "dstPin": "resource"
-                    }
-                ],
-                "shader": {
-                    "name": "HelloWorld"
-                },
-                "dispatchSize": {
-                    "variable": {
-                        "name": "iFrameBufferSize"
-                    }
-                }
-            }
-        },
-        {
             "resourceTexture": {
                 "name": "B",
                 "editorPos": [
@@ -325,24 +277,42 @@
             }
         },
         {
-            "resourceBuffer": {
-                "name": "UIState",
+            "actionDrawCall": {
+                "name": "HelloWorldVSPS",
                 "editorPos": [
-                    139.0,
-                    -190.0
+                    421.0,
+                    -110.0
                 ],
-                "transient": false,
-                "format": {
-                    "structureType": {
-                        "name": "UIState"
-                    }
-                }
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "vertexShader": {
+                    "name": "HelloWorldVS"
+                },
+                "pixelShader": {
+                    "name": "HelloWorldPS"
+                },
+                "countPerInstance": 6,
+                "colorTargets": [
+                    {
+                        "node": "B",
+                        "pin": "resource"
+                    },
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
             }
         }
-    ],
-    "settings": {
-        "common": {
-            "createPDBsAndBinaries": false
-        }
-    }
+    ]
 }
