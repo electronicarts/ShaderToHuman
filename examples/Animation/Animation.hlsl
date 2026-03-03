@@ -73,10 +73,10 @@ void s2h_animMoveTo(inout s2h_AnimContext anim, float deltaTime, inout float2 po
 	anim.momentTime = 0.0f;
 }
 
-static const float2 g_A = float2(100.0f, 100.0f);
-static const float2 g_B = float2(200.0f, 100.0f);
-static const float2 g_C = float2(200.0f, 200.0f);
-static const float2 g_D = float2(230.0f, 280.0f);
+static const float2 g_A = float2(100.0f, 200.0f);
+static const float2 g_B = float2(200.0f, 200.0f);
+static const float2 g_C = float2(200.0f, 300.0f);
+static const float2 g_D = float2(230.0f, 380.0f);
 
 float2 computeCirclePos(float absTime)
 {
@@ -129,12 +129,15 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
     s2h_setScale(ui, 3.0f);
     s2h_printTxt(ui, _H, _e, _l, _l, _o);
     s2h_printTxt(ui, _A, _n, _i, _m);
+	
+	ui.lineWidth = 4.0f;
+	s2h_drawArrow(ui, float2(30, 160), float2(300, 160), float4(1, 0, 0, 1), 16.0f, 8.0f);
+	s2h_drawArrow(ui, float2(50, 140), float2(50, 400), float4(0, 1, 0, 1), 16.0f, 8.0f);
+	ui.lineWidth = 2.0f;
 
-	s2h_printLF(ui);
-	s2h_printLF(ui);
 	s2h_setScale(ui, 1.0f);
 	
-	s2h_setCursor(ui, float2(10, 320));
+	s2h_setCursor(ui, float2(10, 420));
 	
 	// in seconds
 	const float maxTime = 100.0f;
@@ -145,9 +148,9 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 	float currentTime = frac(S2S_TIME() * timeScale / maxTime) * maxTime;
 	
 	// in characters
-	const int2 functionCharSize = int2(80, 15);
+	const int2 functionCharSize = int2(80, 17);
 	const float2 timeRange = float2(0.0f, 100.0f);
-	const float2 valueRange = float2(50, 350); // the points ABCD use this x and y range plus some padding
+	const float2 valueRange = float2(50, 450); // the points ABCD use this x and y range plus some padding
 	float scaledFontSize = s2h_fontSize() * ui.scale;
 	// in pixels
 	int2 functionPxSize = functionCharSize * scaledFontSize;
