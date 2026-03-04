@@ -32,45 +32,35 @@ struct s2h_AnimContext
 {
 	// from s2h_init(), for user convenience
 	float absTime;
-	// absolute time - codeTime, is changed on s2h_anim... calls, used to compute current animation state
-	float momentTime;
+	// from last s2h_animMoveTo() call
+	float absStartTime;
 };
 
 void s2h_init(out s2h_AnimContext anim, float inAbsTime)
 {
 	anim.absTime = inAbsTime;
-	anim.momentTime = anim.absTime;
+	anim.absStartTime = 0.0f;
 }
 
-void s2h_animPause(inout s2h_AnimContext anim, float deltaTime)
+void s2h_animMoveTo(inout s2h_AnimContext anim, float endAbsTime, inout float2 pos, float2 destPos)
 {
-	if (anim.momentTime > deltaTime)
-	{
-		// not yet
-		anim.momentTime -= deltaTime;
-		return;
-	}
-	anim.momentTime = 0.0f;
-}
-
-void s2h_animMoveTo(inout s2h_AnimContext anim, float deltaTime, inout float2 pos, float2 destPos)
-{
-	if (anim.momentTime > deltaTime)
+	if (anim.absTime > endAbsTime)
 	{
 		// already done
 		pos = destPos;
-		anim.momentTime -= deltaTime;
+		anim.absStartTime = endAbsTime;
 		return;
 	}
-	if (anim.momentTime <= 0.0f)
-	{
-		// not yet
-		return;
-	}
+	if (anim.absTime <= anim.absStartTime)
+		return; // not yet
+
+	if (endAbsTime <= anim.absStartTime)
+		return; // input error, avoid div by 0
+
 	// 0..1
-	float alpha = anim.momentTime / deltaTime;
+	float alpha = (anim.absTime - anim.absStartTime) / (endAbsTime - anim.absStartTime);
 	pos = lerp(pos, destPos, alpha);
-	anim.momentTime = 0.0f;
+	anim.absStartTime = endAbsTime;
 }
 
 static const float2 g_A = float2(100.0f, 200.0f);
@@ -85,12 +75,19 @@ float2 computeCirclePos(float absTime)
 
 	// the property we want to animate
 	float2 pos = g_A;
+	
+	float t = 0.0f;
 
-	s2h_animPause(anim, 5.0f); // pause 5 sec
-	s2h_animMoveTo(anim, 10.0f, pos, g_B); // move to B over 10 sec
-	s2h_animMoveTo(anim, 10.0f, pos, g_C); // move to C over 10 sec
-	s2h_animPause(anim, 5.0f); // pause 5 sec 
-	s2h_animMoveTo(anim, 40.0f, pos, g_D); // move to D over 40 sec (slower)
+	t += 5.0f; // pause n seconds
+	s2h_animMoveTo(anim, t, pos, pos); // pause for 5 seconds
+	t += 10.0f; // move over n seconds
+	s2h_animMoveTo(anim, t, pos, g_B); // move to B over 10 sec
+	t += 10.0f; // move over n seconds
+	s2h_animMoveTo(anim, t, pos, g_C); // move to C over 10 sec
+	t += 5.0f; // move over n seconds
+	s2h_animMoveTo(anim, t, pos, pos); // pause for 5 seconds
+	t = 20.0f + 50.0f; // move to reach at absolute time
+	s2h_animMoveTo(anim, t, pos, g_D); // move to D over 40 sec (slower)
 	
 	return pos;
 }
