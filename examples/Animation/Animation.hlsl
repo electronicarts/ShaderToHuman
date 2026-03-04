@@ -32,8 +32,10 @@ struct s2h_AnimContext
 {
 	// from s2h_init(), for user convenience
 	float absTime;
-	// from last s2h_animMoveTo() call
+	// from last s2h_animKey() call
 	float absStartTime;
+	// computed in s2h_animKey() call, 0..1
+	float alpha;
 };
 
 void s2h_init(out s2h_AnimContext anim, float inAbsTime)
@@ -42,25 +44,46 @@ void s2h_init(out s2h_AnimContext anim, float inAbsTime)
 	anim.absStartTime = 0.0f;
 }
 
-void s2h_animMoveTo(inout s2h_AnimContext anim, float endAbsTime, inout float2 pos, float2 destPos)
+void s2h_animKey(inout s2h_AnimContext anim, float endAbsTime)
 {
 	if (anim.absTime > endAbsTime)
 	{
 		// already done
-		pos = destPos;
+		anim.alpha = 1.0f;
 		anim.absStartTime = endAbsTime;
 		return;
 	}
 	if (anim.absTime <= anim.absStartTime)
+	{
+		anim.alpha = 0.0f;
 		return; // not yet
+	}
 
 	if (endAbsTime <= anim.absStartTime)
+	{
+		anim.alpha = 0.0f;
 		return; // input error, avoid div by 0
-
-	// 0..1
-	float alpha = (anim.absTime - anim.absStartTime) / (endAbsTime - anim.absStartTime);
-	pos = lerp(pos, destPos, alpha);
+	}
+	
+	anim.alpha = (anim.absTime - anim.absStartTime) / (endAbsTime - anim.absStartTime);
 	anim.absStartTime = endAbsTime;
+}
+
+// 2D
+void s2h_animMoveTo(inout s2h_AnimContext anim, inout float2 pos, float2 destPos)
+{
+	// 0..1
+	pos = lerp(pos, destPos, anim.alpha);
+}
+
+// 1D
+void s2h_animMoveTo(inout s2h_AnimContext anim, inout float _pos, float _destPos)
+{
+	float2 pos = _pos;
+	float2 destPos = _destPos;
+
+	s2h_animMoveTo(anim, pos, destPos);
+	_pos = pos.x;
 }
 
 static const float2 g_A = float2(100.0f, 200.0f);
@@ -68,38 +91,71 @@ static const float2 g_B = float2(200.0f, 200.0f);
 static const float2 g_C = float2(200.0f, 300.0f);
 static const float2 g_D = float2(230.0f, 380.0f);
 
-float2 computeCirclePos(float absTime)
+// example object to blend
+struct MyAnimObject
 {
+	// pixel position
+	float2 pos;
+	// (0..1, 0..1, 0..1)
+	float3 color;
+	// 0:hidden .. 1:opaque
+	float alpha;
+};
+
+MyAnimObject computeCircle(float absTime)
+{
+	MyAnimObject ret = (MyAnimObject)0;
+	
 	s2h_AnimContext anim;
 	s2h_init(anim, absTime);
 
-	// the property we want to animate
-	float2 pos = g_A;
+	// start condition
+	ret.pos = g_A;
+	ret.color = float3(1.0f, 1.0f, 1.0f);
+	ret.alpha = 1.0f;
 	
 	float t = 0.0f;
 
 	t += 5.0f; // pause n seconds
-	s2h_animMoveTo(anim, t, pos, pos); // pause for 5 seconds
+
+	s2h_animKey(anim, t);
+	s2h_animMoveTo(anim, ret.pos, ret.pos); // don't move
+
 	t += 10.0f; // move over n seconds
-	s2h_animMoveTo(anim, t, pos, g_B); // move to B over 10 sec
+
+	s2h_animKey(anim, t);
+	s2h_animMoveTo(anim, ret.alpha, 0.1f);
+	s2h_animMoveTo(anim, ret.pos, g_B); // move to B over 10 sec
+
 	t += 10.0f; // move over n seconds
-	s2h_animMoveTo(anim, t, pos, g_C); // move to C over 10 sec
+
+	s2h_animKey(anim, t);
+	s2h_animMoveTo(anim, ret.alpha, 1.0f);
+	s2h_animMoveTo(anim, ret.pos, g_C); // move to C over 10 sec
+
 	t += 5.0f; // move over n seconds
-	s2h_animMoveTo(anim, t, pos, pos); // pause for 5 seconds
-	t = 20.0f + 50.0f; // move to reach at absolute time
-	s2h_animMoveTo(anim, t, pos, g_D); // move to D over 40 sec (slower)
+
+	s2h_animKey(anim, t);
+	s2h_animMoveTo(anim, ret.pos, ret.pos); // don't move
+
+	t = 30.0f + 40.0f; // move to reach at absolute time
+
+	s2h_animKey(anim, t);
+	s2h_animMoveTo(anim, ret.pos, g_D); // move to D over 40 sec (slower)
 	
-	return pos;
+	return ret;
 }
 
 float s2h_floatLookupFloat(uint functionId, float x)
 {
-	float2 circlePos = computeCirclePos(x);
+	MyAnimObject obj = computeCircle(x);
 
 	if (functionId == 0)
-		return circlePos.x;
+		return obj.pos.x;
 	if (functionId == 1)
-		return circlePos.y;
+		return obj.pos.y;
+	if (functionId == 2)
+		return obj.alpha;
 
 	return 0.0f;
 }
@@ -161,12 +217,15 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 	if (userPos.x != S2H_FLT_MAX)
 		currentTime = userPos.x;
 
-	// draw 2 functions on top of each other
-	ui.pxCursor = functionCursorPos;
-	
 	// ###### s2h_function y green
+	ui.pxCursor = functionCursorPos;
 	ui.textColor = float4(0, 1, 0, 1);
 	s2h_function(ui, 1, 0.0f, functionCharSize, timeRange, valueRange, 1);
+
+	// ###### s2h_function alpah blue
+	ui.pxCursor = functionCursorPos;
+	ui.textColor = float4(0.1f, 0.1f, 1, 1);
+	s2h_function(ui, 2, 0.0f, functionCharSize, timeRange, float2(0, 1), 1);
 
 	float currentTimePx = ui.pxCursor.x + invLerp(timeRange.x, timeRange.y, currentTime) * functionPxSize.x;
 
@@ -179,20 +238,29 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 	s2h_printTxt(ui, _t, _EQUAL);
 	s2h_printFloat(ui, currentTime);
 
-	float2 circlePos = computeCirclePos(currentTime);
+	MyAnimObject obj = computeCircle(currentTime);
 
-	s2h_drawCircle(ui, circlePos, 16.0f, 1);
+	s2h_drawCircle(ui, obj.pos, 16.0f, float4(obj.color, obj.alpha));
 	
 	s2h_setScale(ui, 2u);
 
-	ui.textColor = float4(1,0,0,1);
 	s2h_setCursor(ui, float2(400, 40));
+
+	ui.textColor = float4(1, 0, 0, 1);
+	s2h_printTxt(ui, _SPACE, _SPACE, _SPACE, _SPACE);
 	s2h_printTxt(ui, _X, _EQUAL);
-	s2h_printFloat(ui, circlePos.x);
+	s2h_printFloat(ui, obj.pos.x);
 	s2h_printLF(ui);
+
 	ui.textColor = float4(0, 1, 0, 1);
+	s2h_printTxt(ui, _SPACE, _SPACE, _SPACE, _SPACE);
 	s2h_printTxt(ui, _Y, _EQUAL);
-	s2h_printFloat(ui, circlePos.y);
+	s2h_printFloat(ui, obj.pos.y);
+	s2h_printLF(ui);
+
+	ui.textColor = float4(0.1f, 0.1f, 1, 1);
+	s2h_printTxt(ui, _a, _l, _p, _h, _a, _EQUAL);
+	s2h_printFloat(ui, obj.alpha);
 	 
 	// grey
 	ui.textColor = float4(0.5f, 0.5f, 0.5f, 1.0f);
@@ -217,8 +285,9 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 }
 
 // todo:
+// * rename s2h_animMoveTo 
+// * hide / unhide / fade
 // * better sample
 // * move code out of HelloCS
 // * sample for multiple independent animations
 // * repeat
-// * plot graph over time
