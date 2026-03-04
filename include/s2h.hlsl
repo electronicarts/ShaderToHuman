@@ -1090,6 +1090,28 @@ void s2h_tableFloat(inout ContextGather ui, uint column, float4 backgroundColor,
 	} 
 } 
  
+// similar to s2h_function but no content inside
+// @return localSize 0..1 if inside
+float2 s2h_printBar(inout ContextGather ui, float4 color, int2 sizeInCharacters, float borderSize)
+{
+	float pxBorderSize = borderSize * ui.scale;
+	
+	float scaledFontSize = s2h_fontSize() * ui.scale;
+	float2 localPos = ui.pxPos - ui.pxCursor;
+	float2 pxSize = float2(sizeInCharacters) * scaledFontSize;
+
+	float4 borderColor = float4(0.4f, 0.4f, 0.4f, 1.0f);
+	s2h_drawRectangleAA(ui, ui.pxCursor - pxBorderSize / 2, ui.pxCursor + pxSize + pxBorderSize / 2, borderColor, color, pxBorderSize);
+//	s2h_drawRectangle(ui, ui.pxCursor, ui.pxCursor + pxSize, float4(1, 0, 0, 1));
+	
+	if (localPos.x >= 0.0f && localPos.y >= 0.0f && localPos.x < pxSize.x && localPos.y < pxSize.y)
+	{
+		ui.dstColor = lerp(ui.dstColor, float4(color.rgb, 1), color.a * (1.0f - ui.dstColor.a));
+	}
+
+	return localPos / pxSize;
+}
+
 float2 s2h_function(inout ContextGather ui, uint functionId, float4 backgroundColor, int2 sizeInCharacters, float2 rangeX, float2 rangeY, int mode)
 { 
 	float scaledFontSize = s2h_fontSize() * ui.scale;
@@ -1097,13 +1119,17 @@ float2 s2h_function(inout ContextGather ui, uint functionId, float4 backgroundCo
 	float2 backup = ui.pxCursor; 
 	float2 localPos = ui.pxPos - ui.pxCursor; 
 	float2 pxSize = float2(sizeInCharacters) * scaledFontSize; 
+
+	// 0..1 if inside
+//	float2 normalPos = s2h_bar(ui, backgroundColor, sizeInCharacters);
 	
+	// todo: redundant computed
 	if(localPos.x >= 0.0f && localPos.y >= 0.0f && localPos.x < pxSize.x && localPos.y < pxSize.y) 
 	{
 		// rangeX.x .. rangeX.y
 		float x = lerp(rangeX.x, rangeX.y, localPos.x / pxSize.x); 
 		
-		ui.dstColor = lerp(ui.dstColor, float4(backgroundColor.rgb, 1), backgroundColor.a * (1.0f - ui.dstColor.a)); 
+//		ui.dstColor = lerp(ui.dstColor, float4(backgroundColor.rgb, 1), backgroundColor.a * (1.0f - ui.dstColor.a)); 
  
 		int row = int(localPos.y / scaledFontSize);
  
@@ -1115,7 +1141,8 @@ float2 s2h_function(inout ContextGather ui, uint functionId, float4 backgroundCo
 		float y1 = s2h_floatLookupFloat(functionId, x + 1.0f / pxSize.x * (rangeX.y - rangeX.x));
 
 		// 0 .. pxSize.y
-		float pxY0 = (1.0f - (y0 - rangeY.x) / (rangeY.y - rangeY.x)) * pxSize.y; 
+		// -1.0f to make the smallest value still in the display range
+		float pxY0 = (1.0f - (y0 - rangeY.x) / (rangeY.y - rangeY.x)) * (pxSize.y - 1.0f);
 		
 		if (mode == 0)
 		{

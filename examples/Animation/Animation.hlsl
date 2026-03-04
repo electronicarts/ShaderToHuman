@@ -70,26 +70,26 @@ void s2h_animKey(inout s2h_AnimContext anim, float endAbsTime)
 }
 
 // 2D
-void s2h_animMoveTo(inout s2h_AnimContext anim, inout float2 pos, float2 destPos)
+void s2h_animLerp(inout s2h_AnimContext anim, inout float2 pos, float2 destPos)
 {
 	// 0..1
 	pos = lerp(pos, destPos, anim.alpha);
 }
 
 // 1D
-void s2h_animMoveTo(inout s2h_AnimContext anim, inout float _pos, float _destPos)
+void s2h_animLerp(inout s2h_AnimContext anim, inout float _pos, float _destPos)
 {
 	float2 pos = _pos;
 	float2 destPos = _destPos;
 
-	s2h_animMoveTo(anim, pos, destPos);
+	s2h_animLerp(anim, pos, destPos);
 	_pos = pos.x;
 }
 
-static const float2 g_A = float2(100.0f, 200.0f);
-static const float2 g_B = float2(200.0f, 200.0f);
-static const float2 g_C = float2(200.0f, 300.0f);
-static const float2 g_D = float2(230.0f, 380.0f);
+static const float2 g_A = float2(100.0f, 150.0f);
+static const float2 g_B = float2(200.0f, 150.0f);
+static const float2 g_C = float2(200.0f, 250.0f);
+static const float2 g_D = float2(230.0f, 330.0f);
 
 // example object to blend
 struct MyAnimObject
@@ -106,6 +106,7 @@ MyAnimObject computeCircle(float absTime)
 {
 	MyAnimObject ret = (MyAnimObject)0;
 	
+	// t0
 	s2h_AnimContext anim;
 	s2h_init(anim, absTime);
 
@@ -113,36 +114,51 @@ MyAnimObject computeCircle(float absTime)
 	ret.pos = g_A;
 	ret.color = float3(1.0f, 1.0f, 1.0f);
 	ret.alpha = 1.0f;
+
+	// control position and alpha (explicit)
+	float t0 = 0.0f;
+	// control color (implicit)
+	ret.color = lerp(float3(1, 0, 1), float3(0, 1, 0), sin(absTime) * 0.5f + 0.5f);
+
+	t0 += 5.0f; // pause n seconds
+
+	s2h_animKey(anim, t0);
+	s2h_animLerp(anim, ret.pos, ret.pos); // don't move
+
+	t0 += 10.0f; // move over n seconds
+
+	s2h_animKey(anim, t0);
+	s2h_animLerp(anim, ret.alpha, 0.1f);
+	s2h_animLerp(anim, ret.pos, g_B); // move to B over 10 sec
+
+	t0 += 10.0f; // move over n seconds
+
+	s2h_animKey(anim, t0);
+	s2h_animLerp(anim, ret.alpha, 1.0f);
+	s2h_animLerp(anim, ret.pos, g_C); // move to C over 10 sec
+
+	t0 += 5.0f; // move over n seconds
+
+	s2h_animKey(anim, t0);
+	s2h_animLerp(anim, ret.pos, ret.pos); // don't move
+
+	t0 = 30.0f + 40.0f; // move to reach at absolute time
+
+	s2h_animKey(anim, t0);
+	s2h_animLerp(anim, ret.pos, g_D); // move to D over 40 sec (slower)
+
+	t0 += 5.0f;
+
+	s2h_animKey(anim, t0); s2h_animKey(anim, t0);	// do not interpolate
 	
-	float t = 0.0f;
-
-	t += 5.0f; // pause n seconds
-
-	s2h_animKey(anim, t);
-	s2h_animMoveTo(anim, ret.pos, ret.pos); // don't move
-
-	t += 10.0f; // move over n seconds
-
-	s2h_animKey(anim, t);
-	s2h_animMoveTo(anim, ret.alpha, 0.1f);
-	s2h_animMoveTo(anim, ret.pos, g_B); // move to B over 10 sec
-
-	t += 10.0f; // move over n seconds
-
-	s2h_animKey(anim, t);
-	s2h_animMoveTo(anim, ret.alpha, 1.0f);
-	s2h_animMoveTo(anim, ret.pos, g_C); // move to C over 10 sec
-
-	t += 5.0f; // move over n seconds
-
-	s2h_animKey(anim, t);
-	s2h_animMoveTo(anim, ret.pos, ret.pos); // don't move
-
-	t = 30.0f + 40.0f; // move to reach at absolute time
-
-	s2h_animKey(anim, t);
-	s2h_animMoveTo(anim, ret.pos, g_D); // move to D over 40 sec (slower)
+	s2h_animLerp(anim, ret.alpha, 0.0f);
 	
+	t0 += 1.0f; // 1 sec off
+
+	s2h_animKey(anim, t0); s2h_animKey(anim, t0); // do not interpolate
+	
+	s2h_animLerp(anim, ret.alpha, 1.0f);
+
 	return ret;
 }
 
@@ -184,13 +200,13 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
     s2h_printTxt(ui, _A, _n, _i, _m);
 	
 	ui.lineWidth = 4.0f;
-	s2h_drawArrow(ui, float2(30, 160), float2(300, 160), float4(1, 0, 0, 1), 16.0f, 8.0f);
-	s2h_drawArrow(ui, float2(50, 140), float2(50, 400), float4(0, 1, 0, 1), 16.0f, 8.0f);
+	s2h_drawArrow(ui, float2(30, 110), float2(300, 110), float4(1, 0, 0, 1), 16.0f, 8.0f);
+	s2h_drawArrow(ui, float2(50, 90), float2(50, 350), float4(0, 1, 0, 1), 16.0f, 8.0f);
 	ui.lineWidth = 2.0f;
 
 	s2h_setScale(ui, 1.0f);
 	
-	s2h_setCursor(ui, float2(10, 420));
+	s2h_setCursor(ui, float2(10, 380));
 	
 	// in seconds
 	const float maxTime = 100.0f;
@@ -210,9 +226,14 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 	
 	float2 functionCursorPos = ui.pxCursor;
 	
+	float3 graphBackground = float3(0.1f, 0.1f, 0.1f);
+
+	// border around s2h_function	
+	s2h_printBar(ui, float4(graphBackground, 1.0f), functionCharSize, 4.0f);
+	
 	// ###### s2h_function x red
 	ui.textColor = float4(1,0,0,1);
-	float2 userPos = s2h_function(ui, 0, float4(0.1f, 0.1f, 0.1f, 1), functionCharSize, timeRange, valueRange, 1);
+	float2 userPos = s2h_function(ui, 0, float4(graphBackground, 1), functionCharSize, timeRange, valueRange, 1);
 	
 	if (userPos.x != S2H_FLT_MAX)
 		currentTime = userPos.x;
@@ -226,15 +247,23 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 	ui.pxCursor = functionCursorPos;
 	ui.textColor = float4(0.1f, 0.1f, 1, 1);
 	s2h_function(ui, 2, 0.0f, functionCharSize, timeRange, float2(0, 1), 1);
-
+	
+	// color bar
+	{
+		// todo: improve API
+		float localX = (ui.pxCursor.x - ui.pxPos.x) / (functionPxSize.x);
+		float localT = lerp(timeRange.x, timeRange.y, localX);
+		s2h_printBar(ui, float4(computeCircle(localT).color, 1), int2(functionCharSize.x, 2), 4.0f);
+	}
+	
 	float currentTimePx = ui.pxCursor.x + invLerp(timeRange.x, timeRange.y, currentTime) * functionPxSize.x;
 
 	// white
 	ui.textColor = 1.0f;
 
-	s2h_drawLine(ui, float2(currentTimePx, ui.pxCursor.y + 10), float2(currentTimePx, ui.pxCursor.y - functionPxSize.y - 10), 1);
+	s2h_drawLine(ui, float2(currentTimePx, ui.pxCursor.y + 30), float2(currentTimePx, ui.pxCursor.y - functionPxSize.y - 10), 1);
 
-	s2h_setCursor(ui, float2(currentTimePx, ui.pxCursor.y + 20));
+	s2h_setCursor(ui, float2(currentTimePx, ui.pxCursor.y + 40));
 	s2h_printTxt(ui, _t, _EQUAL);
 	s2h_printFloat(ui, currentTime);
 
@@ -284,10 +313,21 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
     Output[DTid] = lerp(background, float4(ui.dstColor.rgb, 1), ui.dstColor.a);
 }
 
+// this sample demonstrates:
+// * 2D linear movement
+// * 2D pause movement
+// * 1D fade in/out (to 0.1)
+// * 1D hide / unhide (same method can be used to teleport too)
+
+
 // todo:
-// * rename s2h_animMoveTo 
-// * hide / unhide / fade
-// * better sample
+// * rename s2h_function to printFunction?
+// * s2h_drawRectangleAA should use lineWidth and outer border
+// * better function box rendering (rounded corners)
+// * cubic spline animation
+// * render axis with steps
+// * orientation
+// * lerp 3D, 4D, struct
 // * move code out of HelloCS
 // * sample for multiple independent animations
 // * repeat
