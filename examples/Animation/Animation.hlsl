@@ -89,7 +89,7 @@ void s2h_animLerp(inout s2h_AnimContext anim, inout float _pos, float _destPos)
 static const float2 g_A = float2(100.0f, 150.0f);
 static const float2 g_B = float2(200.0f, 150.0f);
 static const float2 g_C = float2(200.0f, 250.0f);
-static const float2 g_D = float2(230.0f, 330.0f);
+static const float2 g_D = float2(240.0f, 310.0f);
 
 // example object to blend
 struct MyAnimObject
@@ -199,10 +199,27 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
     s2h_printTxt(ui, _H, _e, _l, _l, _o);
     s2h_printTxt(ui, _A, _n, _i, _m);
 	
-	ui.lineWidth = 4.0f;
-	s2h_drawArrow(ui, float2(30, 110), float2(300, 110), float4(1, 0, 0, 1), 16.0f, 8.0f);
-	s2h_drawArrow(ui, float2(50, 90), float2(50, 350), float4(0, 1, 0, 1), 16.0f, 8.0f);
+	
+	const float2 origin = float2(50, 110);
+	const float gridSize = 20.0f;
+	const float dotSize = 2.0f;
+	float2 d = frac((ui.pxPos - origin + dotSize / 2) / gridSize) * gridSize;
+
+	float4 gridColor = float4(0, 0, 0, 0.1f);
+
+	if (all(d < dotSize))
+		gridColor = float4(1, 1, 1, 0.5f);
+
+	s2h_drawRectangle(ui, origin  - gridSize * 1.5f, origin + gridSize * 11.5f, gridColor);
+	
+	ui.lineWidth = (d.x < dotSize) ? 6.0f : 2.0f;
+	s2h_drawArrow(ui, float2(10, 110), float2(300, 110), 1.0f, 16.0f, 8.0f);
+	ui.lineWidth = (d.y < dotSize) ? 6.0f : 2.0f;
+	s2h_drawArrow(ui, float2(50, 70), float2(50, 360), 1.0f, 16.0f, 8.0f);
 	ui.lineWidth = 2.0f;
+	
+	
+//	s2h_drawCrosshair(ui, origin, 10, float4(1, 1, 0, 1));
 
 	s2h_setScale(ui, 1.0f);
 	
@@ -325,7 +342,7 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 // * s2h_drawRectangleAA should use lineWidth and outer border
 // * better function box rendering (rounded corners)
 // * cubic spline animation
-// * render axis with steps
+// * render axis with steps, move to s2h.hlsl
 // * orientation
 // * lerp 3D, 4D, struct
 // * move code out of HelloCS

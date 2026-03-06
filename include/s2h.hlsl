@@ -663,7 +663,7 @@ void s2h_drawTriangle(inout ContextGather ui, s2h_Triangle tri, float4 color)
     ui.dstColor = lerp(ui.dstColor, float4(color.rgb, 1), color.a * mask);
 }
 
-void s2h_drawArrow(inout ContextGather ui, float2 pxStart, float2 pxEnd, float4 color,  float arrowHeadLength, float arrowHeadWidth)
+void s2h_drawArrow(inout ContextGather ui, float2 pxStart, float2 pxEnd, float4 color, float arrowHeadLength, float arrowHeadWidth)
 {
     float2 direction = float2(0,1);
     direction = normalize(pxEnd - pxStart);
