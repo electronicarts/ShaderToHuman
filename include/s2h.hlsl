@@ -128,7 +128,15 @@ void s2h_drawArrow(inout ContextGather ui, float2 pxStart, float2 pxEnd, float4 
 void s2h_drawTriangle(inout ContextGather ui, s2h_Triangle tri, float4 color);
 // 256x32 horizontal color ramp in sRGB space, 128 should be in the middle, RGB color gradient on outside
 void s2h_drawSRGBRamp(inout ContextGather ui, float2 pxPos);
-
+// draw a cartesian XY coordinate system with 2 arrows and unit markers
+// using ui.textColor and ui.lineWidth
+// @param pxOrigin position of 0,0 in pixel coordinates
+// @param domain (minX, minY)-(maxX, maxY)
+// @param pxScale one domain unit in pixels
+// @param gridSize in unit space
+// @param gridColor e.g. float4(1.0f, 1.0f, 1.0f, 0.25f) 
+// @param flags defaut:0, add up bit values, 0x1:Y is up, 0x2:gridLines
+void s2h_coordinateSystem(inout ContextGather ui, float2 pxOrigin, float4 domain, float pxScale, float gridSize, float4 gridColor, uint flags);
 
 // ------------------------------------------
 
@@ -713,6 +721,55 @@ void s2h_drawSRGBRamp(inout ContextGather ui, float2 pxPos)
 	ui.scale = backup.scale;
 	ui.textColor = backup.textColor;
 	ui.pxLeftX = backup.pxLeftX;
+}
+
+void s2h_coordinateSystem(inout ContextGather ui, float2 pxOrigin, float4 domain, float pxScale, float gridSize, float4 gridColor, uint flags)
+{
+	// floor() to snap to pixel grid for consistent visuals
+	pxOrigin = floor(pxOrigin);
+
+	const bool yIsUp = (flags & 0x1u) != 0u;
+	const bool gridLines = (flags & 0x2u) != 0u;
+	
+	float4 color = ui.textColor;
+	
+	const float pxDotSize = ui.lineWidth;
+	// todo: refine math to be consistent in grid size
+	float2 pxD = frac(floor(ui.pxPos - pxOrigin + pxDotSize / 2) / gridSize) * gridSize;
+
+	if (gridLines)
+	{
+		if (all(pxD > floor(pxDotSize)))
+			gridColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	}
+	else
+	{
+		if (any(pxD > floor(pxDotSize)))
+			gridColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	}
+	
+	float4 pxDomain = domain * pxScale + float4(pxOrigin, pxOrigin);
+
+	s2h_drawRectangle(ui, pxDomain.xy, pxDomain.zw, gridColor);
+	
+	float backupLineWidth = ui.lineWidth;
+
+	// X axis
+	if (pxD.x < backupLineWidth)
+		ui.lineWidth *= 2;
+	s2h_drawArrow(ui, float2(pxDomain.x, pxOrigin.y), float2(pxDomain.z, pxOrigin.y), color, 16.0f, 8.0f);
+
+	// Y axis
+	ui.lineWidth = backupLineWidth;
+	if (pxD.y < backupLineWidth)
+		ui.lineWidth *= 2;
+
+	if (yIsUp)
+		s2h_drawArrow(ui, float2(pxOrigin.x, pxDomain.w), float2(pxOrigin.x, pxDomain.y), color, 16.0f, 8.0f);
+	else
+		s2h_drawArrow(ui, float2(pxOrigin.x, pxDomain.y), float2(pxOrigin.x, pxDomain.w), color, 16.0f, 8.0f);
+
+	ui.lineWidth = backupLineWidth;
 }
 
 void s2h_printDisc(inout ContextGather ui, float4 color) 

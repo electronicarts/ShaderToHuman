@@ -2,7 +2,7 @@
     "$schema": "gigischema.json",
     "name": "ShaderToHuman Examples",
     "comment": "S2H : Shader To Human\nprintf + more\n\nGather: A thread per pixel computes a color\nScatter: One  thread write to memory\n2D: Vector graphics primitives\n3D: Ray tracing primitives",
-    "version": "1.0",
+    "version": "1.01",
     "variables": [
         {
             "name": "iFrameBufferSize",
@@ -494,6 +494,32 @@
                     "name": "g_Sampler"
                 }
             ]
+        },
+        {
+            "name": "CoordinateSystem",
+            "fileName": "2D_CoordinateSystem.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "UIState",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "UIState"
+                        },
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
         }
     ],
     "structs": [
@@ -577,7 +603,6 @@
                     287.0
                 ],
                 "linkProperties": [
-                    {},
                     {}
                 ],
                 "connections": [
@@ -605,7 +630,6 @@
                     511.0
                 ],
                 "linkProperties": [
-                    {},
                     {}
                 ],
                 "connections": [
@@ -629,13 +653,12 @@
                 ],
                 "linkProperties": [
                     {},
-                    {},
                     {}
                 ],
                 "connections": [
                     {
                         "srcPin": "Output",
-                        "dstNode": "F",
+                        "dstNode": "E",
                         "dstPin": "resource"
                     },
                     {
@@ -662,7 +685,6 @@
                     380.0
                 ],
                 "linkProperties": [
-                    {},
                     {},
                     {}
                 ],
@@ -696,7 +718,6 @@
                     399.0
                 ],
                 "linkProperties": [
-                    {},
                     {}
                 ],
                 "connections": [
@@ -735,7 +756,7 @@
         },
         {
             "resourceTexture": {
-                "name": "D",
+                "name": "C",
                 "editorPos": [
                     155.0,
                     514.0
@@ -758,13 +779,12 @@
                     511.0
                 ],
                 "linkProperties": [
-                    {},
                     {}
                 ],
                 "connections": [
                     {
                         "srcPin": "Output",
-                        "dstNode": "D",
+                        "dstNode": "C",
                         "dstPin": "resource"
                     }
                 ],
@@ -796,7 +816,7 @@
         },
         {
             "resourceTexture": {
-                "name": "E",
+                "name": "D",
                 "editorPos": [
                     155.0,
                     610.0
@@ -820,13 +840,12 @@
                 ],
                 "linkProperties": [
                     {},
-                    {},
                     {}
                 ],
                 "connections": [
                     {
                         "srcPin": "Output",
-                        "dstNode": "E",
+                        "dstNode": "D",
                         "dstPin": "resource"
                     },
                     {
@@ -850,7 +869,7 @@
         },
         {
             "resourceTexture": {
-                "name": "F",
+                "name": "E",
                 "editorPos": [
                     155.0,
                     706.0
@@ -946,7 +965,6 @@
                     991.0
                 ],
                 "linkProperties": [
-                    {},
                     {}
                 ],
                 "connections": [
@@ -977,7 +995,6 @@
                     975.0
                 ],
                 "linkProperties": [
-                    {},
                     {}
                 ],
                 "connections": [
@@ -1000,7 +1017,7 @@
         },
         {
             "resourceTexture": {
-                "name": "H",
+                "name": "F",
                 "editorPos": [
                     123.0,
                     818.0
@@ -1024,13 +1041,12 @@
                 ],
                 "linkProperties": [
                     {},
-                    {},
                     {}
                 ],
                 "connections": [
                     {
                         "srcPin": "Output",
-                        "dstNode": "H",
+                        "dstNode": "F",
                         "dstPin": "resource"
                     },
                     {
@@ -1076,7 +1092,6 @@
                     1215.0
                 ],
                 "linkProperties": [
-                    {},
                     {}
                 ],
                 "connections": [
@@ -1106,7 +1121,6 @@
                     1186.0
                 ],
                 "linkProperties": [
-                    {},
                     {},
                     {}
                 ],
@@ -1143,6 +1157,56 @@
                     "format": "RGBA8_Unorm_sRGB"
                 },
                 "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "I",
+                "editorPos": [
+                    267.0,
+                    1362.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "CoordinateSystem",
+                "editorPos": [
+                    517.0,
+                    1359.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "I",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UIState",
+                        "dstNode": "UIState",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "CoordinateSystem"
+                },
+                "dispatchSize": {
                     "variable": {
                         "name": "iFrameBufferSize"
                     }
