@@ -75,10 +75,13 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 		s2h_printTxt(ui, _n, _a, _t, _e, _S, _y);
 		s2h_printTxt(ui, _s, _t, _e, _m);
 		
+		int2 pixel = (int2)pxPos;
+
+		bool outsideFrameBuffer = !(all(pixel >= 0) && all(pixel < /*$(Variable:iFrameBufferSize)*/));
+		
 		// fade in pixel grid with strong magnification
 		{
 			float4 gridColor = float4(1, 1, 1, 0.05f);
-			int2 pixel = (int2)pxPos;
 			
 			float2 subPixelPos = frac(pxPos);
 			float2 subPixelSideDist = min(subPixelPos, 1.0f - subPixelPos);
@@ -90,24 +93,42 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 			float gridLineSize = 20.0f;
 			float alpha = 1.0f - gridTextureGradBox(pxPos + 0.5f / gridLineSize, float2(panScale, 0), float2(0, panScale), gridLineSize);
 		
-			if (!(all(pixel >= 0) && all(pixel < /*$(Variable:iFrameBufferSize)*/))) // outside the view 
+			if (outsideFrameBuffer)
 				alpha = 0.0f;
 
 			ui.dstColor = lerp(ui.dstColor, float4(gridColor.rgb, 1), alpha * gridColor.a);
-
-//			if (DTid.y > 580)
-//				ui.dstColor = lerp(float4(1, 0, 0, 1), float4(1, 1, 0, 1), saturate(2.0f - 1.0f / panScale));
 		}
 
 		s2h_deinit(ui, UIState[0].s2h_State);
 		linearColor = linearColor * (1.0f - ui.dstColor.a) + ui.dstColor;
-	}
+		
+		// pixel position inside pixel square
+		{
+			ContextGather uiPixel;
+			s2h_init(uiPixel, frac(pxPos) * 8 * 5 + 0.5f);
+			uiPixel.textColor = float4(1, 0.6f, 0.6f, 0.1f);
+			
+			// fade in with strong magnification
+			uiPixel.textColor.a *= saturate(1.0f / panScale - 8.0f);
 
+			if (outsideFrameBuffer)
+				uiPixel.textColor.a  = 0.0f;
+
+			// left top
+			s2h_setCursor(uiPixel, int2(3, 3));
+			
+			s2h_printInt(uiPixel, (int)pxPos.x);
+			s2h_printLF(uiPixel);
+			s2h_printInt(uiPixel, (int)pxPos.y);
+			linearColor = linearColor * (1.0f - uiPixel.dstColor.a) + uiPixel.dstColor;
+		}
+	}
+	
 	// pixel perfect UI without pan and scale
 	{
 		ContextGather ui;
 		s2h_init(ui, DTid + 0.5f);
-		s2h_setCursor(ui, float2(10, 500));
+		s2h_setCursor(ui, float2(10, 480));
 		ui.s2h_State = UIState[0].s2h_State;
 #ifdef S2H_GLSL
         bool leftMouse = false;
@@ -137,6 +158,20 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 		{
 			UIState[0].PanAndScale.xyz = float3(0, 0, 0);
 		}
+		s2h_printLF(ui);
+		s2h_printLF(ui);
+		
+		s2h_setScale(ui, 1.0f);
+		s2h_printTxt(ui, _SPACE, _l, _e, _f, _t, _SPACE);
+		s2h_printTxt(ui, _M, _o, _u, _s, _e);
+		s2h_printTxt(ui, _D, _r, _a, _g, _COLON);
+		s2h_printTxt(ui, _SPACE, _P, _a, _n);
+		s2h_printLF(ui);
+		s2h_printLF(ui);
+		s2h_printTxt(ui, _r, _i, _g, _h, _t, _SPACE);
+		s2h_printTxt(ui, _M, _o, _u, _s, _e);
+		s2h_printTxt(ui, _D, _r, _a, _g, _COLON);
+		s2h_printTxt(ui, _SPACE, _S, _c, _a, _l, _e);
 
 		linearColor = linearColor * (1.0f - ui.dstColor.a) + ui.dstColor;
 	}
