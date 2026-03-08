@@ -23,7 +23,7 @@
 #define S2H_INCLUDE
 
 // Any potentially API breaking update we should increase the version by 1 allowing other code to adapt to S2H.
-#define S2H_VERSION 12
+#define S2H_VERSION 13
 
 // documentation:
 struct ContextGather

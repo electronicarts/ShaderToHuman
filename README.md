@@ -12,7 +12,11 @@ rapid prototyping in shaders becomes straightforward. Use PrintF debugging, draw
 2d and 3d shapes with ease. No C++ code changes, no buffer setup or content setup required.
 
 S2H Features in Gigi: ![Screenshot](images/teaser.png)
-S2H used to render [Gaussian Splatting](https://github.com/graphdeco-inria/gaussian-splatting) with a stochastic rasterizer (input .ply was procedurally generated): ![GaussianSplatting](images/gaussianSplatting.png)
+S2H used to render [Gaussian Splatting](https://github.com/graphdeco-inria/gaussian-splatting) with a stochastic rasterizer (input .ply was procedurally generated):
+![GaussianSplatting](images/gaussianSplatting.png)
+
+S2H used to implement interactive pannig, zooming and debugging pixel colors:
+[coordinateSystem](images/coordinateSystem.png)
 
 ## Installing the web documentation and running locally
 This is only needed for development on the library. Windows only.
@@ -100,6 +104,8 @@ To run the viewer unit tests, from inside the viewer select File->Run Python Scr
 ## Versions Date Changes
 * 10 first public release
 * 11 1/16/2025 added include guards 
+* 12 
+* 13 3/8/2026 added s2h_coordinateSystem(), added feature example with mouse pan and zoom
 
 ##
 

@@ -428,7 +428,7 @@ void s2h_printCharacter(inout ContextGather ui, uint ascii)
  const uint _7 = 55u;
  const uint _8 = 56u;
  const uint _9 = 57u;
- const int _S2H_VERSION = 12;
+ const int _S2H_VERSION = 13;
 
 void s2h_init(out ContextGather ui, vec2 inPxPos)
 {

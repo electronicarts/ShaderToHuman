@@ -394,7 +394,7 @@ static const uint _6 = 54u;
 static const uint _7 = 55u;
 static const uint _8 = 56u;
 static const uint _9 = 57u;
-static const int _S2H_VERSION = 12;
+static const int _S2H_VERSION = 13;
 
 void s2h_init(out ContextGather ui, float2 inPxPos)
 {
