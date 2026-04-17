@@ -4,8 +4,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 // Example:
-// #include "s2h.h"
-// #include "s2h_3d.h"
+// #include "s2h/s2h.hlsl"
+// #include "s2h/s2h_3d.hlsl"
 // {
 //   struct Context3D context;
 //   // todo
