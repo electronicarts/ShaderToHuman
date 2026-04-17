@@ -4,8 +4,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 // Example:
-// #include "s2h.h"
-// #include "s2h_scatter.h"
+// #include "s2h/s2h.hlsl"
+// #include "s2h/s2h_scatter.hlsl"
 // {
 //   struct ContextScatter ui;
 //   s2h_init(ui);
