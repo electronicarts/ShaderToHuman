@@ -6,7 +6,7 @@
 // pixel shader or compute shader looping through all pixels
 
 // Example:
-// #include "s2h.h"
+// #include "s2h/s2h.hlsl"
 // {
 //   ContextGather ui;
 //   // pxPos is the integer pixel position + 0.5f (pixel centered)
