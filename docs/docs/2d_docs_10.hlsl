@@ -52,7 +52,6 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 
     s2h_init(ui, pxPos);
 
-    ui.mouseInput = S2S_MOUSE();
 
 
 
@@ -162,7 +161,25 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 
 
 
-    // todo
+    float2 center = S2S_FRAMEBUFFERSIZE() / 2.0f;
+
+    ui.lineWidth = 3.0f;
+
+    for (int i = 5; i >= 1; i--)
+    {
+        float size = i * 25.0f;
+        float alpha = 0.3f + (i * 0.1f);
+
+        s2h_Triangle tri;
+        tri.A = center + float2(0.0f, -size);
+        tri.B = center + float2(-size * 0.866f, size * 0.5f);
+        tri.C = center + float2(size * 0.866f, size * 0.5f);
+
+        float t = float(i) / 5.0f;
+        float4 color = float4(0.1f + t * 0.7f, 0.2f + t * 0.5f, 0.9f - t * 0.6f, alpha);
+
+        s2h_drawTriangle(ui, tri, color);
+    }
 
 
     float3 background = float3(0.7f, 0.4f, 0.4f);
