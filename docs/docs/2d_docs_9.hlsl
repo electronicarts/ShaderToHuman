@@ -54,115 +54,32 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 
     ui.mouseInput = S2S_MOUSE();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // todo
-
-
-
-
+    float2 clockCenter = float2(150.0f, S2S_FRAMEBUFFERSIZE().y / 2.0f);
+
+    ui.lineWidth = 3.0f;
+    s2h_drawCircle(ui, clockCenter, 120.0f, float4(0.0f, 0.0f, 0.0f, 1.0f));
+
+    float2 mousePos = float2(ui.mouseInput.x, ui.mouseInput.y);
+    float2 dir = normalize(mousePos - clockCenter);
+
+    float angle = 3.14159265f / 4.0f;
+    float2 dir2 = float2(dir.x * cos(angle) - dir.y * sin(angle),
+                         dir.x * sin(angle) + dir.y * cos(angle));
+
+    ui.lineWidth = 5.0f;
+    s2h_drawArrow(ui, clockCenter, clockCenter + dir * 70.0f,
+                  float4(0.0f, 0.0f, 1.0f, 1.0f), 15.0f, 10.0f);
+    s2h_drawArrow(ui, clockCenter, clockCenter + dir2 * 35.0f,
+                  float4(0.5f, 0.5f, 1.0f, 1.0f), 12.0f, 9.0f);
+
+    float2 rightPos = float2(S2S_FRAMEBUFFERSIZE().x - 150.0f, S2S_FRAMEBUFFERSIZE().y / 2.0f);
+
+    s2h_drawArrow(ui, rightPos + float2(0.0f, -40.0f), rightPos + float2(120.0f, -40.0f),
+                  float4(0.6f, 0.2f, 0.8f, 1.0f), 20.0f, 15.0f);
+    s2h_drawArrow(ui, rightPos, rightPos + float2(120.0f, 0.0f),
+                  float4(1.0f, 0.4f, 0.7f, 1.0f), 20.0f, 15.0f);
+    s2h_drawArrow(ui, rightPos + float2(0.0f, 40.0f), rightPos + float2(120.0f, 40.0f),
+                  float4(1.0f, 0.6f, 0.5f, 1.0f), 20.0f, 15.0f);
 
 
     float3 background = float3(0.7f, 0.4f, 0.4f);
