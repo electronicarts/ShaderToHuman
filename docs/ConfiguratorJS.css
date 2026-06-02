@@ -276,11 +276,11 @@ input + label {
     cursor: pointer;
   }
   
-  /* For Code Copy Button */
+  /* For Code Copy Button and Reload Button */
   pre:has(code) {
     position: relative;
     overflow: auto;
-  
+
     /* make space  */
     margin: 5px 0;
     padding: 1.75rem 0 1.75rem 1rem;
@@ -289,17 +289,26 @@ input + label {
   pre:has(code) button {
     position: absolute;
     top: 5px;
-    right: 5px;
-  
+
     font-size: 0.9rem;
     padding: 0.15rem;
     background-color: #828282;
-  
+
     border: ridge 1px #7b7b7c;
     border-radius: 5px;
     text-shadow: #c4c4c4 0 0 2px;
   }
-  
+
+  /* Copy button positioned on the right */
+  pre:has(code) button:not(.reload-btn) {
+    right: 5px;
+  }
+
+  /* Reload button positioned to the left of copy button */
+  pre:has(code) button.reload-btn {
+    right: 95px;
+  }
+
   pre:has(code) button:hover {
     cursor: pointer;
     background-color: #bcbabb;

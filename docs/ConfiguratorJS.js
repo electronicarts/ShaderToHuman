@@ -633,17 +633,28 @@ function print() {
         console.error(error);
     }
 
-    // Add "Copy Code" helper button 
+    // Add "Copy Code" and "Reload" helper buttons
     let blocks = document.querySelectorAll("pre:has(code)");
 //    console.log("Blocks ",  blocks);
     blocks.forEach((block) => {
-        // only add button if browser supports Clipboard API
+        // Add reload button
+        let reloadButton = document.createElement("button");
+        reloadButton.innerText = "Reload";
+        reloadButton.className = "reload-btn";
+        reloadButton.title = "Reload shader files from disk";
+        block.appendChild(reloadButton);
+
+        reloadButton.addEventListener("click", async () => {
+            await hotReload();
+        });
+
+        // only add copy button if browser supports Clipboard API
         if (navigator.clipboard) {
           let button = document.createElement("button");
-      
+
           button.innerText = copyButtonLabel;
           block.appendChild(button);
-      
+
           button.addEventListener("click", async () => {
               await copyCode(block, button);
           });

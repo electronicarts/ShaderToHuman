@@ -15,9 +15,21 @@
     <title>Shader To Human (S2H)</title>
 
     <script>
-        let DOCS_PATH = "docs/"; // path to the docs folder    
+        let DOCS_PATH = "docs/"; // path to the docs folder
 
         let initialStartup = true;
+
+        async function hotReload() {
+            console.log('Hot reloading shader files...');
+            // Clear the file cache
+            g_HLSLInputCode.clear();
+            // Reload all files from disk
+            await loadAllFiles();
+            // Refresh the UI to recompile with new files
+            refreshUI();
+            console.log('Reload complete!');
+        }
+
         function knowledge_Main() {
             validConfig.add("Tabs"); // to prevent assert, hacky?
 
@@ -40,7 +52,7 @@
 //                set("Tabs", "Sandbox");
             }
 
-            knowledge_GenMath(); 
+            knowledge_GenMath();
         }
 
         // optional callback for first time AFTER page is there, can call onConfigButton()
