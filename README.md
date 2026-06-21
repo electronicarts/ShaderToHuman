@@ -3,7 +3,7 @@
 This tool helps you with shader writing and debugging. It's meant to be used for small specific use cases (printing or drawing a few number, 2D or 3D elements)
 as it was optimized for ease of integration (~ one file, few lines of code). It is not targeting complex UI or minimal performance impact.
 
-If you want to get a introduction, check out the GPC 2026 [presentation](https://graphicsprogrammingconference.com/archive/2025/#shadertohuman-s2h-hlsl-glsl-library-for-debugging-shaders) (sorry, no video recording)
+If you want to get a introduction, check out the GPC 2026 [presentation](https://graphicsprogrammingconference.com/archive/2025/#shadertohuman-s2h-hlsl-glsl-library-for-debugging-shaders) (slides)
 and we suggest to browse the interactive [documentation](https://electronicarts.github.io/ShaderToHuman).
 You can explore more samples in [Gigi](https://github.com/electronicarts/gigi) (Search in GigiBrowser for "Human") and you will see how
 rapid prototyping in shaders becomes straightforward. Use PrintF debugging, draw a watch window in the viewport or use 
