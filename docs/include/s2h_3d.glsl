@@ -3,20 +3,24 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 
@@ -39,8 +43,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 // Example:
-// #include "s2h.h"
-// #include "s2h_3d.h"
+// #include "s2h/s2h.hlsl"
+// #include "s2h/s2h_3d.hlsl"
 // {
 //   struct Context3D context;
 //   // todo
@@ -107,6 +111,7 @@ vec2 s2h_sphIntersect( in vec3 ro, in vec3 rd, in vec3 ce, float ra )
 // axis aligned box centered at the origin, with size boxSize
 vec2 s2h_boxIntersection( in vec3 ro, in vec3 rd, vec3 boxSize, out vec3 outNormal ) 
 {
+	outNormal = vec3(0, 0, 0);
     vec3 m = 1.0/rd; // can precompute if traversing a set of aligned boxes
     vec3 n = m*ro;   // can precompute if traversing a set of aligned boxes
     vec3 k = abs(m)*boxSize;

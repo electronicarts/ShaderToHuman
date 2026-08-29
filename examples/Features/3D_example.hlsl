@@ -74,9 +74,10 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 	s2h_setCursor(ui, float2(10,10));
 	s2h_setScale(ui, 2.0f);
     s2h_printTxt(ui, _P, _o, _s, _COLON);
-    s2h_printFloat(ui, S2S_CAMERA_POS().x); s2h_printTxt(ui, _COMMA);
-    s2h_printFloat(ui, S2S_CAMERA_POS().y); s2h_printTxt(ui, _COMMA);
-    s2h_printFloat(ui, S2S_CAMERA_POS().z);
+	float3 p = S2S_CAMERA_POS();
+    s2h_printFloat(ui, p.x); s2h_printTxt(ui, _COMMA);
+    s2h_printFloat(ui, p.y); s2h_printTxt(ui, _COMMA);
+    s2h_printFloat(ui, p.z);
     s2h_printLF(ui);
 
     float4 tot = float4(0, 0, 0, 0);

@@ -72,6 +72,7 @@ float2 s2h_sphIntersect( in float3 ro, in float3 rd, in float3 ce, float ra )
 // axis aligned box centered at the origin, with size boxSize
 float2 s2h_boxIntersection( in float3 ro, in float3 rd, float3 boxSize, out float3 outNormal ) 
 {
+	outNormal = float3(0, 0, 0);
     float3 m = 1.0/rd; // can precompute if traversing a set of aligned boxes
     float3 n = m*ro;   // can precompute if traversing a set of aligned boxes
     float3 k = abs(m)*boxSize;

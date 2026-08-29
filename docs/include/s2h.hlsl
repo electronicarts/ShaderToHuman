@@ -7,17 +7,20 @@
 // pixel shader or compute shader looping through all pixels
 
 // Example:
-// #include "s2h.h"
+// #include "s2h/s2h.hlsl"
 // {
 //   ContextGather ui;
 //   // pxPos is the integer pixel position + 0.5f (pixel centered)
-//   s2h_init(ui, pxPos + 0.5f);
+//   s2h_init(ui, pxPos + 0.5f);	  // either this (CS)
+//	 s2h_init(ui, input.position.xy); // or that (PS / FS)
 //   // print AB 
 //   s2h_printTxt(ui, _A, _B);
+//   // background or former color in linear
+//   float4 linearBackground = float4(0.1f, 0.1f, 0.1f, 1);
 //   // Note: ui.dstColor is premultiplied
-//   linearColor = linearBackground * (1.0f - ui.dstColor.a) + ui.dstColor;
+//   float4 linearColor = linearBackground * (1.0f - ui.dstColor.a) + ui.dstColor;
 //   // for correct AntiAliasing 
-//   srgbColor = float4(s2h_accurateLinearToSRGB(linearColor.rgb), 1);
+//   srgbColor = float4(s2h_accurateLinearToSRGB(linearColor.rgb), linearColor.a);
 // }
 
 
@@ -204,12 +207,22 @@ float3 s2h_colorRampRGB(float value);
 
 
 	// can result in WebGL warning (Fragment Shader WARNING: 0:248: '3.40282347e+38' : Float overflow) but works
-    static const float S2H_FLT_MAX = 3.40282347e+38;
+    // Slang: warning 39999: float literal '3.40282347e+38' unrepresentable, converted to 'inf'
+//    static const float S2H_FLT_MAX = 3.40282347e+38;
+
+	static const float S2H_FLT_MAX = asfloat(0x7F7FFFFFu);
+
 	// works in most GLSL environments and no warning in WebGL
 //    static const float S2H_FLT_MAX = intBitsToFloat(2139095039);
 
 
 // You can define this to provide your own font (different size, visual or better lookup performance by using a texture)
+
+
+
+
+
+
 
 
 
@@ -266,6 +279,10 @@ float3 s2h_colorRampRGB(float value);
     0x7c7c600cu, 0x34cc78feu, 0x6c7c6430u, 0x183000ffu, 
     0x600cf0f8u, 0x1876306cu, 0xc60cfc1cu, 0x18e000ffu, 
     0xf01e0000u, 0x00000000u, 0x00f80000u, 0x000000ffu
+
+
+
+
 
 
 
@@ -394,7 +411,7 @@ static const uint _6 = 54u;
 static const uint _7 = 55u;
 static const uint _8 = 56u;
 static const uint _9 = 57u;
-static const int _S2H_VERSION = 13;
+static const int _S2H_VERSION = 14;
 
 void s2h_init(out ContextGather ui, float2 inPxPos)
 {

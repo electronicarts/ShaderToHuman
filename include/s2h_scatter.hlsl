@@ -71,14 +71,14 @@ void s2h_init(out ContextScatter ui)
 	// white, opaque
 	ui.textColor = float4(1, 1, 1, 1);
 	ui.pxCursor = int2(0, 0);
-	ui.pxLeftX = ui.pxCursor.x;
+	ui.pxLeftX = int(ui.pxCursor.x);
 	ui.scale = 1;
 } 
 
 void s2h_setCursor(inout ContextScatter ui, float2 inpxLeftTop)
 {
-	ui.pxCursor = inpxLeftTop; 
-	ui.pxLeftX = inpxLeftTop.x;
+	ui.pxCursor = int2(inpxLeftTop);
+	ui.pxLeftX = int(inpxLeftTop.x);
 }
 
 void s2h_setScale(inout ContextScatter ui, uint scale)
@@ -102,14 +102,14 @@ void s2h_printCharacter(inout ContextScatter ui, uint ascii)
 void s2h_drawCrosshair(inout ContextScatter ui, float2 pxCenter, float pxRadius, float4 color)
 {
 	// avoiding int math for better performance
-	onGfxForAllScatter(pxCenter, ui.textColor);
+	onGfxForAllScatter(int2(pxCenter), ui.textColor);
 
 	[loop] for(float i = 1; i < pxRadius; ++i)
 	{
-		onGfxForAllScatter(pxCenter + float2( i,  0), color);
-		onGfxForAllScatter(pxCenter+ float2(-i,  0), color);
-		onGfxForAllScatter(pxCenter+ float2( 0,  i), color);
-		onGfxForAllScatter(pxCenter + float2( 0, -i), color);
+		onGfxForAllScatter(int2(pxCenter + float2(i, 0)), color);
+		onGfxForAllScatter(int2(pxCenter + float2(-i, 0)), color);
+		onGfxForAllScatter(int2(pxCenter + float2(0, i)), color);
+		onGfxForAllScatter(int2(pxCenter + float2(0, -i)), color);
 	}
 }
 
@@ -172,7 +172,7 @@ void s2h_printInt(inout ContextScatter ui, int value)
 			// counter +=8 from printCharacter ()
 			ui.pxCursor.x -= 8 * ui.scale;
 		}
-		ui.pxCursor.x = backup;
+		ui.pxCursor.x = int(backup);
 	}
 }
 
@@ -219,7 +219,7 @@ void s2h_printBlock(inout ContextScatter ui, float4 color)
 
 		float mask = saturate(4 - max(abs(pxLocal.x), abs(pxLocal.y)));
 
-		if(mask)
+		if(mask > 0.0f)
 			onGfxForAllScatter(ui.pxCursor + int2(x,y), color);
 	}
 
@@ -235,7 +235,7 @@ void s2h_printDisc(inout ContextScatter ui, float4 color)
 
 		float mask = saturate(4 - length(pxLocal));
 
-		if(mask)
+		if(mask > 0.0f)
 			onGfxForAllScatter(ui.pxCursor + int2(x,y), color);
 	}
 

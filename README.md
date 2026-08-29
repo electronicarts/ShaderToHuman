@@ -1,4 +1,4 @@
-# Shader To Human (S2H) - HLSL/GLSL library for debugging shaders
+# Shader To Human (S2H) - HLSL/GLSL/Slang library for debugging shaders
 
 This tool helps you with shader writing and debugging. It's meant to be used for small specific use cases (printing or drawing a few number, 2D or 3D elements)
 as it was optimized for ease of integration (~ one file, few lines of code). It is not targeting complex UI or minimal performance impact.
@@ -106,6 +106,7 @@ To run the viewer unit tests, from inside the viewer select File->Run Python Scr
 * 11 1/16/2025 added include guards 
 * 12 
 * 13 3/8/2026 added s2h_coordinateSystem(), added feature example with mouse pan and zoom
+* 14 added Slang support (tested with Vulkan and one new DX12 example in Gigi), changed FLT_MAX to prevent warning with slang it becoming inf, fixed warnings
 
 ##
 

@@ -10,20 +10,23 @@
 // {
 //   ContextGather ui;
 //   // pxPos is the integer pixel position + 0.5f (pixel centered)
-//   s2h_init(ui, pxPos + 0.5f);
+//   s2h_init(ui, pxPos + 0.5f);	  // either this (CS)
+//	 s2h_init(ui, input.position.xy); // or that (PS / FS)
 //   // print AB 
 //   s2h_printTxt(ui, _A, _B);
+//   // background or former color in linear
+//   float4 linearBackground = float4(0.1f, 0.1f, 0.1f, 1);
 //   // Note: ui.dstColor is premultiplied
-//   linearColor = linearBackground * (1.0f - ui.dstColor.a) + ui.dstColor;
+//   float4 linearColor = linearBackground * (1.0f - ui.dstColor.a) + ui.dstColor;
 //   // for correct AntiAliasing 
-//   srgbColor = float4(s2h_accurateLinearToSRGB(linearColor.rgb), 1);
+//   srgbColor = float4(s2h_accurateLinearToSRGB(linearColor.rgb), linearColor.a);
 // }
 
 #ifndef S2H_INCLUDE
 #define S2H_INCLUDE
 
 // Any potentially API breaking update we should increase the version by 1 allowing other code to adapt to S2H.
-#define S2H_VERSION 13
+#define S2H_VERSION 14
 
 // documentation:
 struct ContextGather
@@ -203,7 +206,11 @@ float3 s2h_colorRampRGB(float value);
 
 #ifndef S2H_FLT_MAX
 	// can result in WebGL warning (Fragment Shader WARNING: 0:248: '3.40282347e+38' : Float overflow) but works
-    static const float S2H_FLT_MAX = 3.40282347e+38;
+    // Slang: warning 39999: float literal '3.40282347e+38' unrepresentable, converted to 'inf'
+//    static const float S2H_FLT_MAX = 3.40282347e+38;
+
+	static const float S2H_FLT_MAX = asfloat(0x7F7FFFFFu);
+
 	// works in most GLSL environments and no warning in WebGL
 //    static const float S2H_FLT_MAX = intBitsToFloat(2139095039);
 #endif
@@ -213,7 +220,13 @@ float3 s2h_colorRampRGB(float value);
 #define S2H_DISABLE_EMBEDDED_FONT 1
 
 #ifdef S2H_GLSL
-	const uint g_miniFont[] = uint[](
+
+	#ifdef __SLANG__
+		static const uint g_miniFont[] = {
+	#else
+		const uint g_miniFont[] = uint[](
+	#endif
+
 #else
 	static const uint g_miniFont[] = {
 #endif
@@ -266,7 +279,11 @@ float3 s2h_colorRampRGB(float value);
     0x600cf0f8u, 0x1876306cu, 0xc60cfc1cu, 0x18e000ffu, 
     0xf01e0000u, 0x00000000u, 0x00f80000u, 0x000000ffu
 #ifdef S2H_GLSL
+	#ifdef __SLANG__
+	};
+	#else
 	);
+	#endif
 #else
 	};
 #endif
