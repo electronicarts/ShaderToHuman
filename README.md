@@ -56,7 +56,7 @@ The source code is released under an open license as detailed in License.txt.
 Functional, Open Source
 
 ## To do:
-Smaller task with the size in days (d) or hours (h) for a some programmer (the value does not matter but ratio between tasks should be about right).
+Smaller task with the size in days (d) or hours (h) for a some average programmer.
 
 1) 4h Pass text in string literals e.g. (ui, “text”) vs (ui, _t, _e, _x, _t) as optional API (for modern HLSL only) [link](https://github.com/GPUOpen-LibrariesAndSDKs/WorkGraphPlayground/blob/main/tutorials/tutorial-0/HelloWorkGraphs.hlsl)
 2) 1d Fix table and function plotting for GLSL. Seems GLSL forward declaration of functions is different from HLSL and we have to find a different solution
@@ -67,7 +67,7 @@ Smaller task with the size in days (d) or hours (h) for a some programmer (the v
 7) 1d Combine scroll bars with table view to scroll larger views vertically, optional as table API should not get more complex
 8) 5d Implement for other APIs ? e.g. WebGPU, CUDA,   only if there is interest
 9) 3d Documentation only offer GLSL fragment shader and HLSL compute shader, we should add HLSL pixel shader.
-10) 5d Add working GLSL samples other than WebGL (browsers might emulate with DirectX), ideally OpenGL and Vulkan
+10) 5d Add or working GLSL samples other than WebGL (browsers might emulate with DirectX), ideally OpenGL and Vulkan
 11) 7d Optional API (another .hlsl include file) to record operations to be persistent (Atomic to serialize function id and parameters, reader to play back the commands)
 12) 1h Polish documentation for triangle and arrow to show the available options
 13) 2d Make all documentation interactive (e.g. respond to mouse) or animated (time dependent)
@@ -106,6 +106,7 @@ To run the viewer unit tests, from inside the viewer select File->Run Python Scr
 * 12 
 * 13 3/8/2026 added s2h_coordinateSystem(), added feature example with mouse pan and zoom
 * 14 added Slang support (tested with Vulkan and one new DX12 example in Gigi), changed FLT_MAX to prevent warning with slang it becoming inf, fixed warnings
+  example [Vulkan Slang project](https://github.com/Kosmokleaner/VulkanSlangStarter)
 
 ##
 
